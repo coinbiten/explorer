@@ -2,6 +2,13 @@ const express = require('express')
 const router = express.Router();
 const client = require("../rpcclient");
 const web3 = require("../web3client")
+const account = require("../module/account")
+const block = require("../module/block")
+const contract = require("../module/contract")
+const logs = require("../module/logs")
+const stats = require("../module/stats")
+const token = require("../module/token")
+const transaction = require("../module/transaction")
 
 async function checkTransactionCount() {
   transactions = [];
@@ -84,17 +91,24 @@ router.get('/test', (req, res) => {
 
 
     router.get("/",(req,res)=>{
+      //Account
       var module = req.query.module
       var action = req.query.action
       var address = req.query.address
       var txhash = req.query.txhash
       var contractaddress = req.query.contractaddress
+      //Logs
       var fromBlock = req.query.fromBlock
       var toBlock = req.query.toBlock
       var topic0 = req.query.topic0
+      //Logsend
+   
+      //Stats
       var date = req.query.date
+      //Block
       var blockno = req.query.blockno
       var closest = req.query.closest
+      //Contract //Transaction
       var addressHash = req.query.addressHash
       var name = req.query.name
       var compilerVersion = req.query.compilerVersion
@@ -105,6 +119,7 @@ router.get('/test', (req, res) => {
       var compilerversion = req.query.compilerversion
       var sourceCode = req.query.sourceCode
       var guid = req.query.guid
+      
       res.json({module,action,address,txhash,contractaddress,
         fromBlock,topic0,date,blockno,closest,addressHash,
         name,compilerVersion,optimization,contractSourceCode,toBlock,codeformat,
