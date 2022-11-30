@@ -83,4 +83,34 @@ router.get('/test', (req, res) => {
     })
 
 
+    router.get("/",(req,res)=>{
+      var module = req.query.module
+      var action = req.query.action
+      var address = req.query.address
+      var txhash = req.query.txhash
+      var contractaddress = req.query.contractaddress
+      var fromBlock = req.query.fromBlock
+      var toBlock = req.query.toBlock
+      var topic0 = req.query.topic0
+      var date = req.query.date
+      var blockno = req.query.blockno
+      var closest = req.query.closest
+      var addressHash = req.query.addressHash
+      var name = req.query.name
+      var compilerVersion = req.query.compilerVersion
+      var optimization = req.query.optimization
+      var contractSourceCode = req.query.contractSourceCode
+      var codeformat = req.query.codeformat
+      var contractname = req.query.contractname
+      var compilerversion = req.query.compilerversion
+      var sourceCode = req.query.sourceCode
+      var guid = req.query.guid
+      res.json({module,action,address,txhash,contractaddress,
+        fromBlock,topic0,date,blockno,closest,addressHash,
+        name,compilerVersion,optimization,contractSourceCode,toBlock,codeformat,
+        contractname,compilerversion,sourceCode,guid,txhash
+      })
+    })
+
+
 module.exports=router    
