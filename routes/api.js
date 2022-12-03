@@ -9,34 +9,13 @@ const logs = require("../module/logs")
 const stats = require("../module/stats")
 const token = require("../module/token")
 const transaction = require("../module/transaction")
+const AbiContract = require("../module/AbiContract")
+const db = require("../db")
+var blockcollection = db.collection("blocks")
+var trxcollection = db.collection("transaction")
+var blockscan = db.collection("blockscan")
+require("./blockscanner")
 
-async function checkTransactionCount() {
-  transactions = [];
-  allblock=[]
-  latestBlock=await web3.eth.getBlockNumber()
-  for (var i =0; i <= latestBlock; i++) {
-    let numblock = latestBlock-i
-    let block = await web3.eth.getBlock(numblock);
-    if (block !== null) {
-      console.log(block)
-      allblock.push(block)
-      if (block.transactions !== null && block.transactions.length !== 0) {
-        block.transactions.forEach(function (item, index) {
-          web3.eth.getTransaction(item)
-          .then(tx=>{
-            //console.log(tx)
-            transactions = transactions.push(tx);
-          })
-          .catch(errr=>{
-            console.log("....")
-          })
-        });
-      }
-    }
-  }
-  console.log([transactions,allblock])
-  return [transactions,allblock];
-}
 router.get('/test', (req, res) => {
       web3.eth.getBlockNumber().then((result) => {
           console.log("Latest Ethereum Block is ",result);
@@ -46,19 +25,33 @@ router.get('/test', (req, res) => {
           //console.log(bal)
       });
 
-      let transactions = checkTransactionCount()
+
+      /*
       .then(ress=>{
         console.log(ress)
-      })
+      })*/
 
       //web3.eth.getChainId().then(console.log);
-      //web3.eth.getBlock(0).then(console.log);
+      //web3.eth.getBlock(34625).then(console.log);
       //web3.eth.getBlock("latest").then(console.log);
       
       console.log("Block Hash")
-      //web3.eth.getBlock("0xcbcd60dac0bbfd3afd1ac0748ca50614eb5df2bbfb554c06bc7c65ab3433ce74").then(console.log);
-      //web3.eth.getTransaction("0xcbcd60dac0bbfd3afd1ac0748ca50614eb5df2bbfb554c06bc7c65ab3433ce74").then(console.log);
-
+      //web3.eth.getBlock("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
+      /*web3.eth.getTransactionReceipt("0x3370778ff6dc3dbd79b562e3e82b1715482bb9f531a7a376bb96a604c6ea3cad")
+      .then(rs=>{
+        console.log(rs)
+        //console.log(rs.logs)
+        
+      });
+      web3.eth.getTransactionReceipt("0x383020f1ffbc26c623a11d76331c1a7e9ae0884a131a2ed66be02ff5824876df").then(console.log);
+      web3.eth.getTransaction("0x335c253898d30011db651890ff16ea8553f70711fe54ef51fcc6d93a9fe05910")
+      .then(rs=>{
+        console.log(rs)
+        //console.log(rs.logs)
+      });*/
+      web3.eth.getBlock(162,true).then(console.log);
+      //web3.eth.getTransaction("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
+     // web3.eth.getTransactionReceipt("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
       //console.log(web3.eth);
       var blocks=[]
       web3.eth.getBlockNumber().then((result) => {

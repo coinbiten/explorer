@@ -1,4 +1,4 @@
-export const token_abi = [
+const token_abi = [
     {
         "constant": true,
         "inputs": [],
@@ -267,3 +267,5 @@ export const token_abi = [
         "type": "function"
     }
 ]
+
+module.exports=token_abi
