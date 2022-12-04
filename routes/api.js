@@ -34,7 +34,7 @@ router.get("/priceupdate",(req,res)=>{
         if (err) throw err;
         console.log("Price Updated");
     });
-    res.json({"status":"success",data})
+    res.json({"status":"success",name:config.coinName,symbol:config.symbol,data:newvalues.$set})
   })
   .catch(err=>{
     res.json({"status":"Failed"})
@@ -197,15 +197,44 @@ router.get("/account/trx/:address",(req,res)=>{
 })
 
 router.get("/getrpc",(req,res)=>{
-  res.json({
-    "rpc-http":config.http_provider,
-    "rpc-socket":config.ws_provider,
-    "network-id":config.networkid,
-    "networt-name":config.networt_name,
-    "coin-name":config.coinName,
-    "symbol":config.symbol,
-    "decimal":config.decimal
+  pricecollect.find( { id: 1 } ).toArray(function(err, result) {
+    if (err){
+      res.json({
+        "rpc-http":config.http_provider,
+        "rpc-socket":config.ws_provider,
+        "network-id":config.networkid,
+        "networt-name":config.networt_name,
+        "coin-name":config.coinName,
+        "symbol":config.symbol,
+        "decimal":config.decimal
+      })
+    };
+    if(parseFloat(result[0].price)>0){
+      res.json({
+        "rpc-http":config.http_provider,
+        "rpc-socket":config.ws_provider,
+        "network-id":config.networkid,
+        "networt-name":config.networt_name,
+        "coin-name":config.coinName,
+        "symbol":config.symbol,
+        "decimal":config.decimal,
+        "price":result[0].price,
+        "change24":result[0].change24,
+        "change1h":result[0].change1h
+      })
+    }else{
+      res.json({
+        "rpc-http":config.http_provider,
+        "rpc-socket":config.ws_provider,
+        "network-id":config.networkid,
+        "networt-name":config.networt_name,
+        "coin-name":config.coinName,
+        "symbol":config.symbol,
+        "decimal":config.decimal
+      })
+    }
   })
+
 })
 
 router.get('/test', (req, res) => {
