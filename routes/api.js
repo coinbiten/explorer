@@ -1,15 +1,49 @@
 const express = require('express')
 const router = express.Router();
-const client = require("../rpcclient");
 const web3 = require("../web3client")
+const axios = require('axios');
 const db = require("../db")
+var config = require("../config/config")
 var blockcollection = db.collection("blocks")
 var trxcollection = db.collection("transaction")
 var blockscan = db.collection("blockscan")
+var pricecollect = db.collection("price")
 require("./blockscanner")
 
+router.get("/priceupdate",(req,res)=>{
+  fetch(new Request(config.livecoinwatchapi), {
+  method: "POST",
+  headers: new Headers({
+    "content-type": "application/json",
+    "x-api-key": config.x_api_key,
+  }),
+  body: JSON.stringify({
+    currency: "USD",
+    code: config.currency_code,
+    meta: true,
+  }),
+  })
+  .then((response) => response.json())
+  .then((data) =>{
+    var hour = (parseFloat(data.delta.hour-1)* 100).toFixed(2)
+    var day = (parseFloat(data.delta.day-1)* 100).toFixed(2)
+    var priceval = parseFloat(data.rate).toFixed(data.rate>1?2:8)
+    var myquery = { id: 1 };
+    var newvalues = { $set: {price:priceval,change24:day,change1h:hour } };
+    pricecollect.updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("Price Updated");
+    });
+    res.json({"status":"success",data})
+  })
+  .catch(err=>{
+    res.json({"status":"Failed"})
+  })
+
+})
+
 router.get("/blocks",(req,res)=>{
-  var limits = 100
+  var limits = 50
   var sorts = -1
   if(req.query.limit!=="" && req.query.limit!==undefined){
     limits=parseInt(req.query.limit)
@@ -159,6 +193,18 @@ router.get("/account/trx/:address",(req,res)=>{
       }
       res.json(data)
     }
+  })
+})
+
+router.get("/getrpc",(req,res)=>{
+  res.json({
+    "rpc-http":config.http_provider,
+    "rpc-socket":config.ws_provider,
+    "network-id":config.networkid,
+    "networt-name":config.networt_name,
+    "coin-name":config.coinName,
+    "symbol":config.symbol,
+    "decimal":config.decimal
   })
 })
 

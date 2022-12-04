@@ -4,6 +4,7 @@ var blockcollection = db.collection("blocks")
 var trxcollection = db.collection("transaction")
 var blockscan = db.collection("blockscan")
 
+
 web3ws =()=>{
     var subscription = web3.eth.subscribe('newBlockHeaders', function(error, result){
         if (!error && result !==null) {
