@@ -137,25 +137,16 @@ router.get("/account/:address",(req,res)=>{
 router.get("/account/trx/:address",(req,res)=>{
   var trx=[]
   var address = req.params.address;
-  trxcollection.find({"$or":[
-    {"data.from": address}, 
-    {"data.from" : { $exists: true }},
-    {"data.to": address},
-    {"data.to" : { $exists: true }},
-  ]
-  }).sort({number:-1}).toArray(function(err, result) {
+  trxcollection.find({"$or":[{"data.from": address}, {"data.to": address}]}).sort({number:-1}).toArray(function(err, result) {
     if (err){
       res.json([])
     }else{
       result.forEach(function (item, index) {
-        trx.push(item.data)
-      })
-      const data = trx.filter(items =>{
-        if(items.from==address || items.to==address){
-          return items;
+        if(item.data.from==address || item.data.to==address){
+          trx.push(item.data)
         }
-      });
-      res.json(data)
+      })
+      res.json(trx)
     }
   })
 })
