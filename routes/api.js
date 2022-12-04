@@ -2,19 +2,163 @@ const express = require('express')
 const router = express.Router();
 const client = require("../rpcclient");
 const web3 = require("../web3client")
-const account = require("../module/account")
-const block = require("../module/block")
-const contract = require("../module/contract")
-const logs = require("../module/logs")
-const stats = require("../module/stats")
-const token = require("../module/token")
-const transaction = require("../module/transaction")
-const AbiContract = require("../module/AbiContract")
 const db = require("../db")
 var blockcollection = db.collection("blocks")
 var trxcollection = db.collection("transaction")
 var blockscan = db.collection("blockscan")
 require("./blockscanner")
+
+router.get("/blocks",(req,res)=>{
+  var limits = 100
+  var sorts = -1
+  if(req.query.limit!=="" && req.query.limit!==undefined){
+    limits=parseInt(req.query.limit)
+  }
+  if(req.query.sort!=="" && req.query.sort!==undefined){
+    if(req.query.sort=="desc"){
+      sorts=-1
+    }
+    if(req.query.sort=="asc"){
+      sorts=1
+    }
+  }
+  var blocks=[]
+  blockcollection.find( { } ).sort({number:sorts}).limit(limits).toArray(function(err, result) {
+    if (err){
+      res.json([])
+    }else{
+      result.forEach(function (item, index) {
+        blocks.push(item.block)
+      })
+      res.json(blocks)
+    }
+  })
+  
+})
+
+router.get("/block/:id",(req,res)=>{
+  web3.eth.getBlock(req.params.id,true)
+  .then(rs=>{
+    if (rs !== null){
+      res.json([rs])
+    }else{
+      res.json([])
+    } 
+  })
+  .catch(err=>{
+    res.json([])
+  })
+})
+
+router.get("/block-count",(req,res)=>{
+  web3.eth.getBlockNumber()
+  .then(rs=>{
+    if (rs !== null){
+      res.json({number:rs})
+    }else{
+      res.json([])
+    } 
+  })
+  .catch(err=>{
+    res.json([])
+  })
+})
+
+router.get("/latest-block",(req,res)=>{
+  web3.eth.getBlock("latest",true)
+  .then(rs=>{
+    if (rs !== null){
+      res.json([rs])
+    }else{
+      res.json([])
+    } 
+  })
+  .catch(err=>{
+    res.json([])
+  })
+})
+
+router.get("/trxs",(req,res)=>{
+  var limits = 100
+  var sorts = -1
+  if(req.query.limit!=="" && req.query.limit!==undefined){
+    limits=parseInt(req.query.limit)
+  }
+  if(req.query.sort!=="" && req.query.sort!==undefined){
+    if(req.query.sort=="desc"){
+      sorts=-1
+    }
+    if(req.query.sort=="asc"){
+      sorts=1
+    }
+  }
+  var trx=[]
+  trxcollection.find( { } ).sort({number:sorts}).limit(limits).toArray(function(err, result) {
+    if (err){
+      res.json([])
+    }else{
+      result.forEach(function (item, index) {
+        trx.push(item.data)
+      })
+      res.json(trx)
+    }
+  })
+  
+})
+
+router.get("/trx/:hash",(req,res)=>{
+  web3.eth.getTransaction(req.params.hash)
+      .then(rs=>{
+        res.json([rs])
+      })
+      .catch(err=>{
+        res.json([])
+      })
+})
+
+router.get("/account/:address",(req,res)=>{
+      web3.eth.getBalance(req.params.address)
+      .then(rs=>{
+        res.json({
+          status : "Ok",
+          balance :rs/1000000000000000000,
+          decimalBalance : rs
+        });
+      })
+      .catch(err=>{
+        res.json({
+          status : "Failed",
+          balance :"",
+          decimalBalance : ""
+        });
+      })
+})
+
+router.get("/account/trx/:address",(req,res)=>{
+  var trx=[]
+  var address = req.params.address;
+  trxcollection.find({"$or":[
+    {"data.from": address}, 
+    {"data.from" : { $exists: true }},
+    {"data.to": address},
+    {"data.to" : { $exists: true }},
+  ]
+  }).sort({number:-1}).toArray(function(err, result) {
+    if (err){
+      res.json([])
+    }else{
+      result.forEach(function (item, index) {
+        trx.push(item.data)
+      })
+      const data = trx.filter(items =>{
+        if(items.from==address || items.to==address){
+          return items;
+        }
+      });
+      res.json(data)
+    }
+  })
+})
 
 router.get('/test', (req, res) => {
       web3.eth.getBlockNumber().then((result) => {
@@ -82,43 +226,6 @@ router.get('/test', (req, res) => {
       ])
     })
 
-
-    router.get("/",(req,res)=>{
-      //Account
-      var module = req.query.module
-      var action = req.query.action
-      var address = req.query.address
-      var txhash = req.query.txhash
-      var contractaddress = req.query.contractaddress
-      //Logs
-      var fromBlock = req.query.fromBlock
-      var toBlock = req.query.toBlock
-      var topic0 = req.query.topic0
-      //Logsend
-   
-      //Stats
-      var date = req.query.date
-      //Block
-      var blockno = req.query.blockno
-      var closest = req.query.closest
-      //Contract //Transaction
-      var addressHash = req.query.addressHash
-      var name = req.query.name
-      var compilerVersion = req.query.compilerVersion
-      var optimization = req.query.optimization
-      var contractSourceCode = req.query.contractSourceCode
-      var codeformat = req.query.codeformat
-      var contractname = req.query.contractname
-      var compilerversion = req.query.compilerversion
-      var sourceCode = req.query.sourceCode
-      var guid = req.query.guid
-      
-      res.json({module,action,address,txhash,contractaddress,
-        fromBlock,topic0,date,blockno,closest,addressHash,
-        name,compilerVersion,optimization,contractSourceCode,toBlock,codeformat,
-        contractname,compilerversion,sourceCode,guid,txhash
-      })
-    })
 
 
 module.exports=router    
