@@ -120,7 +120,7 @@ router.get("/account/:address",(req,res)=>{
       web3.eth.getBalance(req.params.address)
       .then(rs=>{
         res.json({
-          status : "Ok",
+          status : "Success",
           balance :rs/1000000000000000000,
           decimalBalance : rs
         });
@@ -137,16 +137,27 @@ router.get("/account/:address",(req,res)=>{
 router.get("/account/trx/:address",(req,res)=>{
   var trx=[]
   var address = req.params.address;
+  var bal = 0
   trxcollection.find({"$or":[{"data.from": address}, {"data.to": address}]}).sort({number:-1}).toArray(function(err, result) {
     if (err){
-      res.json([])
+      var data1 = {
+        status:"Failed",
+        address:address,
+        trx:trx
+      }
+      res.json(data1)
     }else{
       result.forEach(function (item, index) {
         if(item.data.from==address || item.data.to==address){
           trx.push(item.data)
         }
       })
-      res.json(trx)
+      var data = {
+        status:"Success",
+        address:address,
+        trx:trx
+      }
+      res.json(data)
     }
   })
 })
