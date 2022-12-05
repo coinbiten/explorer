@@ -1,5 +1,63 @@
 @media only screen and (max-width: 600px) {
- 
- 
+    .menu{
+        padding-left: 0px;
+        padding-right: 0px;
+       }
+    .logo{
+        width: 50%;
+        height: 100%;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        display: inline-block;
+        padding-left: 20px;
+       }
+       .logo img{
+        width: 150px;
+        height: 100%;
+        cursor: pointer;
+       }
+       .baricon{
+        display: block;
+        width: 50%;
+        float: right;
+        display: inline-block;
+        padding-right: 20px;
+       }
+       .baricon .fa-bars{
+        float: right;
+        padding-top: 18px;
+        font-size: 25px;
+        color: rgb(129, 125, 125);
+        cursor: pointer;
+       }
+       .navmenu{
+        width: 100%!important;
+        height: auto!important;
+        float: left;
+        display: grid;
+        background-color: white;
+        padding-left: 20px;
+        display: none;
+       }
+       #menutoggle{
+        display: none;
+       }
+       .navmenu ul{
+        padding: 20px;
+        float: left;
+        padding: 0;
+      }
+      .navmenu ul li{
+       list-style: none;
+       float: none;
+       font-size: 16px;
+       padding-left: 0px!important;
+       padding-top: 10px;
+       padding-bottom: 10px;
+       width: 100%!important;
+       background: white;
+     }
+
+
 
 }

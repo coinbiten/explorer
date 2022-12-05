@@ -24,11 +24,32 @@
   </head>
   <body>
 
-    <div class="menu w-100">
+    <div class="menu">
         <div class="logo">
-           Logo
+          <a href="/">
+            <img src="/images/logo.svg" />
+           </a>
         </div>
-        <ul class="navmenu">
-
+        <div class="baricon">
+          <i onclick="menuClick()" class="fa fa-bars"></i>
+        </div>
+        <div class="navmenu" id="menutoggle">
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blocks">Blocks</a></li>
+            <li><a href="/txs">Transactions</a></li>
+            <li><a href="/txsPending">Pending Transactions</a></li>
+          </ul>
         </div>
     </div>
+
+    <script>
+      function menuClick() {
+        var x = document.getElementById("menutoggle");
+        if (x.style.display == "none" || x.style.display == "") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+     </script>
