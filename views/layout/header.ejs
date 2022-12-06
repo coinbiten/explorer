@@ -20,6 +20,10 @@
     crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="/js/notify.js"></script>
     <script type="text/javascript" charset="utf8" src="/js/moment.min.js"></script>
+    <script src="/js/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@3.6.1/dist/lightweight-charts.standalone.production.js" integrity="sha256-L+5GBtkjmwnFa5zpzHPGwFXU3fkCAvzehkQrdfux1Ew=" crossorigin="anonymous"></script>
+
     <title><%= title %></title>
   </head>
   <body>
@@ -33,14 +37,12 @@
         <div class="baricon">
           <i onclick="menuClick()" class="fa fa-bars"></i>
         </div>
-        <div class="navmenu" id="menutoggle">
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/blocks">Blocks</a></li>
-            <li><a href="/txs">Transactions</a></li>
-            <li><a href="/txsPending">Pending Transactions</a></li>
-          </ul>
+        <div class="navmenu">
+          <%- include("navbar") %>
         </div>
+    </div>
+    <div id="menutoggle" class="menumobile">
+      <%- include("navbar") %>
     </div>
 
     <script>

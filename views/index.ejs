@@ -1,3 +1,171 @@
 <%- include("layout/header") %>
+  <div class="hometopbg">
+    <h3>The <%= name %> Blockchain Explorer</h3>
+    <div class="row">
+      <div class="col-md-7">
+        <div class="searchhome">
+          <div class="hselect">
+            <select>
+              <option selected>All Filters</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+          <div class="hinput"><input placeholder=" Search by Address / Txn Hash / Block / Token / Ens" /></div>
+          <div class="hsearch">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>Featured: Build Precise & Reliable Apps with <%= name %> APIs. <a href="/">Learn More!</a></p>
+  </div>
+
+  <div class="homearea">
+
+    <div class="cardbox">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="cardinside">
+            <div class="row">
+              <div class="col-md-1 col-2">
+                <img src="/images/ethereum-1.svg"/>
+              </div>
+              <div class="col-md-9 col-10">
+                <p>
+                  <%= symbol %> PRICE
+                </p>
+                <p>$1,249.94 @ 0.07371 BTC (-1.31%)</p>
+              </div>
+            </div>
+          </div>
+          <div class="cardinside2">
+            <div class="row">
+              <div class="col-md-1 col-2">
+                <img src="/images/icon-8.svg"/>
+              </div>
+              <div class="col-md-9 col-10">
+                <p>
+                  MARKET CAP
+                </p>
+                <p>$150,646,362,864.00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 midbox">
+            <div class="cardinside">
+              <div class="row">
+                <div class="col-md-1 col-2">
+                  <img src="/images/icon-2-1.svg"/>
+                </div>
+                <div class="col-md-6 col-5">
+                  <p>
+                    TRANSACTIONS
+                  </p>
+                  <p>1,800.23 M (13.7 TPS)</p>
+                </div>
+                <div class="col-md-5 col-5">
+                  <p>
+                    MED GAS PRICE
+                  </p>
+                  <p>
+                    5 Gwei ($0.68)
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="cardinside2">
+              <div class="row">
+                <div class="col-md-1 col-2">
+                  <img src="/images/icon-51.svg"/>
+                </div>
+                <div class="col-md-11 col-10">
+                  <p>
+                    LAST FINALIZED BLOCK LAST SAFE BLOCK
+                  </p>
+                  <p>
+                    16126474
+                  </p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <p><%= name %> TRANSACTION HISTORY IN 14 DAYS</p>
+        <div id="myChart"></div>
+        <script>
+          var chart = LightweightCharts.createChart(document.getElementById("myChart"), {
+
+	rightPriceScale: {
+		visible: false,
+    borderColor: '#ffffff',
+	},
+	leftPriceScale: {
+		visible: true,
+    borderColor: '#ffffff',
+	},
+	layout: {
+		backgroundColor: '#ffffff',
+		textColor: 'rgb(18, 22, 28)',
+	},
+  handleScale: {
+    pressedMouseMove: false
+  },
+  grid: {
+    horzLines: {
+      color: '#ffffff',
+      visible:false
+    },
+    vertLines: {
+      color: '#ffffff',
+      visible:false
+    },
+  },
+	crosshair: {
+		mode: LightweightCharts.CrosshairMode.Normal,
+	},
+	timeScale: {
+		borderColor: '#ffffff',
+	},
+	handleScroll: {
+		vertTouchDrag: false,
+	},
+});
+chart.addLineSeries({
+	color: 'rgb(18, 22, 28)',
+	lineWidth: 2,
+  priceLineVisible: false
+}).setData([{ time: {year: 2018, month: 9, day: 22}, value: 25.531816900940186 },
+
+{ time: {year: 2018, month: 12, day: 16}, value: 88.48802912330535 },
+{ time: {year: 2018, month: 12, day: 17}, value: 89.68490260440238 },
+{ time: {year: 2018, month: 12, day: 18}, value: 86.66224375818467 },
+{ time: {year: 2018, month: 12, day: 19}, value: 88.05916917094234 },
+{ time: {year: 2018, month: 12, day: 20}, value: 78.96513176162487 },
+{ time: {year: 2018, month: 12, day: 21}, value: 90.54239307317953 },
+{ time: {year: 2018, month: 12, day: 22}, value: 92.40550159209458 },
+{ time: {year: 2018, month: 12, day: 23}, value: 82.47365747958841 },
+{ time: {year: 2018, month: 12, day: 24}, value: 91.55327647717618 },
+{ time: {year: 2018, month: 12, day: 25}, value: 89.34790162747024 },
+{ time: {year: 2018, month: 12, day: 26}, value: 85.68927849920716 },
+{ time: {year: 2018, month: 12, day: 27}, value: 85.86795553966918 },
+{ time: {year: 2018, month: 12, day: 28}, value: 90.55358282944198 },
+{ time: {year: 2018, month: 12, day: 29}, value: 91.28939932554621 },
+{ time: {year: 2018, month: 12, day: 30}, value: 100.90495261248472 },
+{ time: {year: 2018, month: 12, day: 31}, value: 98.99348823473713 }]);
+
+
+
+        </script>
+        
+      </div>
+    </div>
+
+
+
+  </div>
+
 
 <%- include("layout/footer") %>
