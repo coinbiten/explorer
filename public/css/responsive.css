@@ -114,6 +114,21 @@
     .bk62{
       padding-left: 11px;
     }
+    .blockcard h5{
+      display: none;
+    }
+    .blockcard h6{
+      display: none;
+    }
+    .blockcard p{
+      font-size: 12px;
+    }
+    .txword{
+      display: block;
+    }
+    .txsecond{
+      display: none;
+    }
 
 
 }

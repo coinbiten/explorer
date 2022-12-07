@@ -218,7 +218,9 @@ body {
   position: absolute;
   bottom: 0;
   padding: 17px;
-  padding-top: 10px;
+  padding-top: 15px;
+  z-index: 7;
+  background: white;
 }
 .blockviewbtn .btn-primary{
   background-color: rgba(52,152,219,.1);
@@ -232,4 +234,70 @@ body {
   background-color: #3498db;
   border-color: #3498db;
   color: white;
+}
+.blockcardhome{
+  padding: 16px;
+  padding-top: 5px;
+  height: 450px;
+  width: 100%;
+  overflow-x: hidden;  
+  overflow-y: auto;
+}
+.blockcard{
+  border-bottom:1px solid rgb(224, 222, 222);
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.blockcard h5{
+  background-color: rgb(241, 242, 244);
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  padding: 14px;
+  border-radius: 7px;
+  font-size: 16px;
+  display: block;
+}
+.blockcard h6{
+  background-color: rgb(241, 242, 244);
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  padding: 14px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: block;
+}
+.blockcard a{
+  text-decoration: none;
+}
+.blockcard p{
+  padding-top: 5px;
+  margin-bottom: 5px;
+  color: rgb(78, 76, 76);
+}
+.blockcard span{
+  color: rgb(131, 126, 126);
+}
+.ethval{
+  float: right;
+  background: rgb(241, 242, 244);
+  color: rgb(119, 145, 185);
+  padding: 7px;
+  padding-top: 8px!important;
+  border-radius: 3px;
+}
+.txword{
+  display: none;
+}
+.txsecond{
+  display: block;
+}
+div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+div::-webkit-scrollbar {
+  display: none;
 }
