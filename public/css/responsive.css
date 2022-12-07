@@ -99,11 +99,20 @@
       height: 78px;
     }
     .cardbox{
-      height: 420px;
+      height: 520px;
     }
     .cardbox p{
       font-size: 12px;
       padding-left: 0;
+    }
+    .chartarea{
+      padding-top: 25px;
+    }
+    .bk61{
+      padding-right: 11px;
+    }
+    .bk62{
+      padding-left: 11px;
     }
 
 

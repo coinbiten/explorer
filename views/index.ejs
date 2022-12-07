@@ -30,7 +30,7 @@
           <div class="cardinside">
             <div class="row">
               <div class="col-md-1 col-2">
-                <img src="/images/ethereum-1.svg"/>
+                <img src="/images/ethereum-1.svg" />
               </div>
               <div class="col-md-9 col-10">
                 <p>
@@ -43,7 +43,7 @@
           <div class="cardinside2">
             <div class="row">
               <div class="col-md-1 col-2">
-                <img src="/images/icon-8.svg"/>
+                <img src="/images/icon-8.svg" />
               </div>
               <div class="col-md-9 col-10">
                 <p>
@@ -55,117 +55,147 @@
           </div>
         </div>
         <div class="col-md-4 midbox">
-            <div class="cardinside">
-              <div class="row">
-                <div class="col-md-1 col-2">
-                  <img src="/images/icon-2-1.svg"/>
-                </div>
-                <div class="col-md-6 col-5">
-                  <p>
-                    TRANSACTIONS
-                  </p>
-                  <p>1,800.23 M (13.7 TPS)</p>
-                </div>
-                <div class="col-md-5 col-5">
-                  <p>
-                    MED GAS PRICE
-                  </p>
-                  <p>
-                    5 Gwei ($0.68)
-                  </p>
-                </div>
+          <div class="cardinside">
+            <div class="row">
+              <div class="col-md-1 col-2">
+                <img src="/images/icon-2-1.svg" />
+              </div>
+              <div class="col-md-6 col-5">
+                <p>
+                  TRANSACTIONS
+                </p>
+                <p>1,800.23 M (13.7 TPS)</p>
+              </div>
+              <div class="col-md-5 col-5">
+                <p>
+                  MED GAS PRICE
+                </p>
+                <p>
+                  5 Gwei ($0.68)
+                </p>
               </div>
             </div>
-            <div class="cardinside2">
-              <div class="row">
-                <div class="col-md-1 col-2">
-                  <img src="/images/icon-51.svg"/>
-                </div>
-                <div class="col-md-11 col-10">
-                  <p>
-                    LAST FINALIZED BLOCK LAST SAFE BLOCK
-                  </p>
-                  <p>
-                    16126474
-                  </p>
-                </div>
+          </div>
+          <div class="cardinside2">
+            <div class="row">
+              <div class="col-md-1 col-2">
+                <img src="/images/icon-51.svg" />
+              </div>
+              <div class="col-md-11 col-10">
+                <p>
+                  LAST FINALIZED BLOCK LAST SAFE BLOCK
+                </p>
+                <p>
+                  16126474
+                </p>
+              </div>
             </div>
+          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <p><%= name %> TRANSACTION HISTORY IN 14 DAYS</p>
-        <div id="myChart"></div>
-        <script>
-          var chart = LightweightCharts.createChart(document.getElementById("myChart"), {
-
-	rightPriceScale: {
-		visible: false,
-    borderColor: '#ffffff',
-	},
-	leftPriceScale: {
-		visible: true,
-    borderColor: '#ffffff',
-	},
-	layout: {
-		backgroundColor: '#ffffff',
-		textColor: 'rgb(18, 22, 28)',
-	},
-  handleScale: {
-    pressedMouseMove: false
-  },
-  grid: {
-    horzLines: {
-      color: '#ffffff',
-      visible:false
-    },
-    vertLines: {
-      color: '#ffffff',
-      visible:false
-    },
-  },
-	crosshair: {
-		mode: LightweightCharts.CrosshairMode.Normal,
-	},
-	timeScale: {
-		borderColor: '#ffffff',
-	},
-	handleScroll: {
-		vertTouchDrag: false,
-	},
-});
-chart.addLineSeries({
-	color: 'rgb(18, 22, 28)',
-	lineWidth: 2,
-  priceLineVisible: false
-}).setData([{ time: {year: 2018, month: 9, day: 22}, value: 25.531816900940186 },
-
-{ time: {year: 2018, month: 12, day: 16}, value: 88.48802912330535 },
-{ time: {year: 2018, month: 12, day: 17}, value: 89.68490260440238 },
-{ time: {year: 2018, month: 12, day: 18}, value: 86.66224375818467 },
-{ time: {year: 2018, month: 12, day: 19}, value: 88.05916917094234 },
-{ time: {year: 2018, month: 12, day: 20}, value: 78.96513176162487 },
-{ time: {year: 2018, month: 12, day: 21}, value: 90.54239307317953 },
-{ time: {year: 2018, month: 12, day: 22}, value: 92.40550159209458 },
-{ time: {year: 2018, month: 12, day: 23}, value: 82.47365747958841 },
-{ time: {year: 2018, month: 12, day: 24}, value: 91.55327647717618 },
-{ time: {year: 2018, month: 12, day: 25}, value: 89.34790162747024 },
-{ time: {year: 2018, month: 12, day: 26}, value: 85.68927849920716 },
-{ time: {year: 2018, month: 12, day: 27}, value: 85.86795553966918 },
-{ time: {year: 2018, month: 12, day: 28}, value: 90.55358282944198 },
-{ time: {year: 2018, month: 12, day: 29}, value: 91.28939932554621 },
-{ time: {year: 2018, month: 12, day: 30}, value: 100.90495261248472 },
-{ time: {year: 2018, month: 12, day: 31}, value: 98.99348823473713 }]);
-
-
-
-        </script>
-        
+        <div class="col-md-4 chartarea">
+          <p>
+            <%= name %> TRANSACTION HISTORY IN 14 DAYS
+          </p>
+          <div class="row">
+            <div class="col-md-2 col-2">
+              <br />
+              <p>1190K</p><br /><br /><br /><br />
+              <p>1190K</p>
+            </div>
+            <div class="col-md-10 col-10">
+              <div id="myChart"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6 bk61">
+        <div class="blockhome">
+          <div class="blockheadtitle">
+            <p>Latest Blocks</p>
+          </div>
 
+          <div class="blockviewbtn">
+             <a href="/blocks" class="btn btn-primary shadow-none w-100">View all blocks</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 bk62">
+        <div class="blockhome">
+          <div class="blockheadtitle">
+            <p>Latest Transactions</p>
+          </div>
+
+          <div class="blockviewbtn">
+            <a href="/txs" class="btn btn-primary shadow-none w-100">View all transactions</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
+    <script>
+      var chart = LightweightCharts.createChart(document.getElementById("myChart"), {
 
-<%- include("layout/footer") %>
+        rightPriceScale: {
+          visible: false,
+          borderColor: '#ffffff',
+        },
+        leftPriceScale: {
+          visible: false,
+          borderColor: '#ffffff',
+        },
+        layout: {
+          backgroundColor: '#ffffff',
+          textColor: 'rgb(18, 22, 28)',
+        },
+        handleScale: {
+          pressedMouseMove: false
+        },
+        grid: {
+          horzLines: {
+            color: '#ffffff',
+            visible: false
+          },
+          vertLines: {
+            color: '#ffffff',
+            visible: false
+          },
+        },
+        crosshair: {
+          mode: LightweightCharts.CrosshairMode.Normal,
+        },
+        timeScale: {
+          borderColor: '#ffffff',
+        },
+        handleScroll: {
+          vertTouchDrag: false,
+        },
+      });
+      chart.timeScale().fitContent();
+      chart.addLineSeries({
+        color: 'rgb(18, 22, 28)',
+        lineWidth: 1,
+        priceLineVisible: false
+      }).setData([
+        { time: { year: 2018, month: 9, day: 22 }, value: 25.531816900940186 },
+        { time: { year: 2018, month: 12, day: 16 }, value: 1578 },
+        { time: { year: 2018, month: 12, day: 17 }, value: 200 },
+        { time: { year: 2018, month: 12, day: 18 }, value: 86.66224375818467 },
+        { time: { year: 2019, month: 12, day: 18 }, value: 765 },
+        { time: { year: 2020, month: 12, day: 18 }, value: 435 },
+      ]);
+
+      this.resizeObserver = new ResizeObserver(entries => {
+        if (entries.length === 0 || entries[0].target !== document.getElementById('myChart')) { return; }
+        const newRect = entries[0].contentRect;
+        chart.applyOptions({ height: newRect.height, width: newRect.width });
+      })
+      this.resizeObserver.observe(document.getElementById("myChart"));
+
+    </script>
+
+    <%- include("layout/footer") %>
