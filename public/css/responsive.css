@@ -129,6 +129,17 @@
     .txsecond{
       display: none;
     }
+    .blockspaginate ul{
+      width: 100%;
+      float: left;
+      margin-left: 0;
+      padding-left:0;
+      display: inline-block;
+    }
+    .blockspaginate ul li{
+      font-size: 11px;
+      margin-left: 2px;
+    }
 
 
 }

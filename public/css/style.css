@@ -83,7 +83,7 @@ body {
   width: 100%;
   background: white;
   border-radius: 5px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 .searchhome .hselect{
   width: 17%;
@@ -300,4 +300,81 @@ div {
 
 div::-webkit-scrollbar {
   display: none;
+}
+.blockpage{
+  padding: 20px;
+}
+.blockpage h3{
+  font-size: 23px;
+  padding-top: 5px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgb(224, 222, 222);
+}
+.blockpage .featurelink{
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+.blockpage .featurelink a{
+  text-decoration: none;
+}
+.blocks{
+  min-height: 300px;
+  max-height: auto;
+  width: 100%;
+  background: white;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid rgb(241, 241, 241);
+  padding: 10px;
+}
+.blocks td{
+  height: 49px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.blocks td a{
+  text-decoration: none;
+}
+.blocktdhead{
+  font-size: 17px;
+  font-weight: bold;
+}
+.blockspaginate{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.blockspaginate p{
+  color: rgb(161, 159, 159);
+  font-size: 16px;
+}
+
+.blockspaginate ul{
+  float: right;
+}
+.blockspaginate ul li{
+  list-style: none;
+  float: left;
+  background-color: rgb(234, 244, 251);
+  padding: 7px 10px;
+  margin-left: 5px;
+  border-radius: 5px;
+  color: rgb(87, 84, 84);
+  font-size: 13px;
+}
+.blockspaginate ul li a{
+  text-decoration: none;
+}
+.blockspaginate ul li .inactive{
+  color: rgb(70, 67, 67);
+}
+.blockspaginate ul li:hover{
+  background: #3498db;
+}
+.blockspaginate ul li:hover a{
+  color: white!important;
+}
+.blockspaginate ul .countpage:hover{
+  background-color: rgb(234, 244, 251);
+  color: rgb(87, 84, 84);
 }
