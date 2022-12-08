@@ -378,3 +378,81 @@ div::-webkit-scrollbar {
   background-color: rgb(234, 244, 251);
   color: rgb(87, 84, 84);
 }
+.footer{
+  background-image: url("/images/abstract-shapes-20.svg");
+  min-height: 300px;
+  max-height: auto;
+  width: 100%;
+  background-color: rgb(18, 22, 28);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.footer img{
+  height: 35px;
+  width: 35px;
+}
+.footer h3{
+  color: white;
+  font-size: 26px;
+  margin-top: 30px;
+  padding-bottom: 20px;
+}
+.footer p{
+  color: rgb(235, 231, 231);
+  margin-bottom: 10px;
+}
+.footer h5{
+  color: rgb(231, 228, 228);
+  font-size: 16px;
+  margin-top: 30px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(77, 75, 75);
+  width: 228px;
+}
+.footer ul{
+ padding-left: 0;
+}
+.footer ul li{
+  list-style: none;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+.footer ul li a{
+  color: rgb(187, 184, 184);
+  text-decoration: none;
+}
+.footer ul li a:hover{
+  color: rgb(240, 240, 240);
+}
+.footerbottom{
+  color: white;
+  border-top: 1px solid rgb(77, 75, 75);
+  margin-top: 10px;
+  position: relative;
+  bottom: 0;
+  padding-top: 25px;
+  padding-bottom: 5px;
+}
+.footerbottom ul{
+  float: right;
+}
+.footerbottom ul li{
+  float: left;
+  list-style: none;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 15px;
+}
+.footerbottom ul li .fab{
+  height: 30px;
+  width: 30px;
+  background: rgb(42, 48, 56);
+  border-radius: 50%;
+  color: white;
+  padding: 10px;
+  font-size: 12px;
+}
+.footerbottom ul li .fab:hover{
+  background: white;
+  color: black;
+}

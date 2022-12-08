@@ -140,6 +140,20 @@
       font-size: 11px;
       margin-left: 2px;
     }
+    .footer h5{
+      width: 100%;
+    }
+    .footerbottom ul{
+      float: left;
+    }
+    .footerbottom{
+      padding-top: 15px;
+      padding-bottom: 5px;
+    }
+    .footerbottom ul li{
+      padding-left: 0px;
+      padding-right: 15px;
+    }
 
 
 }
