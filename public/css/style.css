@@ -466,3 +466,51 @@ div::-webkit-scrollbar {
   min-width: 50px;
   max-width: auto;
 }
+.blockview{
+  width: 100%;
+  min-height: 300px;
+  max-height: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.blockview h3{
+  padding-top: 20px;
+  font-size: 22px;
+  padding-bottom: 10px;
+}
+.blockdetails{
+  width: 100%;
+  min-height: 700px;
+  max-height: auto;
+  background-color: white;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid rgb(233, 230, 230);
+}
+.blockrow{
+  border-bottom: 1px solid rgb(240, 237, 237);
+  padding-top: 15px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+}
+.blockrow a{
+  text-decoration: none;
+}
+.blockstatus{
+  color: rgb(0, 201, 167);
+  background: rgb(229, 249, 246);
+  border-radius: 5px;
+  padding: 7px 10px;
+  width: 100px;
+  height: 30px;
+}
+.trxcountonblock a{
+  text-decoration: none;
+  background-color: rgb(225, 237, 247);
+  border-radius: 5px;
+  padding: 7px 10px;
+  width: auto;
+  height: 30px;
+}
