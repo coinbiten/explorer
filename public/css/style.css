@@ -456,3 +456,13 @@ div::-webkit-scrollbar {
   background: white;
   color: black;
 }
+.trxmethod{
+  background: rgb(225, 237, 247);
+  padding: 5px 7px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 12px;
+  width: 70px;
+  min-width: 50px;
+  max-width: auto;
+}
