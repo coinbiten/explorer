@@ -29,6 +29,12 @@ router.get('/tx/:hash', (request, response) => {
   response.render("trx.ejs", {title: config.networt_name+" Transaction Hash (TxHash) " ,hash:hash,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
 })
 
+
+router.get('/address/:address', (request, response) => { 
+  var address = request.params.address
+  response.render("address.ejs", {title: config.networt_name+" Address "+address ,address:address,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
+})
+
 router.get('*', function(req, res){
   res.render("error.ejs", {title: config.networt_name+" 404 page not found" ,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
 });
