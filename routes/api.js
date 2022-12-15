@@ -36,7 +36,7 @@ router.get("/priceupdate",(req,res)=>{
         if (err) throw err;
         console.log("Price Updated");
     });
-    res.json({"status":"success",name:config.coinName,symbol:config.symbol,data:newvalues.$set})
+    res.json({"status":"success",name:config.coinName,symbol:config.symbol,data:newvalues.$set,csupply:config.csupply,supply:config.supply})
   })
   .catch(err=>{
     res.json({"status":"Failed"})
@@ -120,9 +120,9 @@ router.get("/latest-block",(req,res)=>{
 })
 
 router.get("/trxs",(req,res)=>{
-  var limits = 100
-  var sorts = -1
-  var page=1;
+  var limits =100
+  var sorts =-1
+  var page=0;
   if(req.query.limit!=="" && req.query.limit!==undefined){
     limits=parseInt(req.query.limit)
   }

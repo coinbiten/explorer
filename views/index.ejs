@@ -64,7 +64,7 @@
                 <p>
                   TRANSACTIONS
                 </p>
-                <p>1,800.23 M (13.7 TPS)</p>
+                <p id="trx-count"> 0 (13.7 TPS)</p>
               </div>
               <div class="col-md-5 col-5">
                 <p>
@@ -85,18 +85,39 @@
                 <p>
                   LAST FINALIZED BLOCK
                 </p>
-                <p>
-                  16126474
+                <p id="blockn">
+                  10000
                 </p>
               </div>
               <div class="col-md-5 col-5">
                 <p>
                   LAST SAFE BLOCK
                 </p>
-                <p>
-                  16126474
+                <p id="blockn1">
+                  9999
                 </p>
               </div>
+              <script>
+                axios.get("/api/block-count")
+                .then(res=>{
+                  document.getElementById("blockn").innerText=res.data.number;
+                  document.getElementById("blockn1").innerText=res.data.number;
+                  //console.log(res.data.number)
+                })
+                .catch(err=>{
+                  //
+                })
+
+                axios.get("/api/trx-count")
+                .then(res=>{
+                  document.getElementById("trx-count").innerText=res.data.trx +" (13.7 TPS)";
+                  //console.log(res.data)
+                })
+                .catch(err=>{
+                  //
+                })
+
+              </script>
             </div>
           </div>
         </div>
@@ -107,8 +128,8 @@
           <div class="row">
             <div class="col-md-2 col-2">
               <br />
-              <p>1190K</p><br /><br /><br /><br />
-              <p>1190K</p>
+              <p id="lasttrx">10K</p><br /><br /><br /><br />
+              <p id="todaytrx">10K</p>
             </div>
             <div class="col-md-10 col-10">
               <div id="myChart"></div>
@@ -118,335 +139,200 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-6 bk61">
-        <div class="blockhome">
-          <div class="blockheadtitle">
-            <p>Latest Blocks</p>
-          </div>
-          <div class="blockcardhome">
+    <script type="text/babel">
+      var name = "<%= symbol %>"
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            bdata: [],
+            tdata: [],
+            countt: 50,
+            loader: true
+          }
+        }
+        async componentDidMount() {
+          await axios.get("/api/blocks?limit=10&sort=desc")
+            .then(res => {
+              this.setState({ bdata: res.data, loader: false })
+            })
+            .catch(error => {
+              console.log(error)
+            })
+          await axios.get("/api/trxs?limit=10&sort=desc")
+            .then(res => {
+              this.setState({ tdata: res.data, loader: false })
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        }
 
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h5>Bk</h5>
-                </div>
-                <div class="col-md-3 col-9">
-                  <p><a href="/block/">16133720</a></p>
-                  <p><span>14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>Fee Recipient <a href="/address/">beaverbuild</a></P>
-                  <p><a href="/txs?block=">167 txns</a> <span>in 12 secs</span></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
+        render() {
 
-          </div>
-          <div class="blockviewbtn">
-             <a href="/blocks" class="btn btn-primary shadow-none w-100">View all blocks</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 bk62">
-        <div class="blockhome">
-          <div class="blockheadtitle">
-            <p>Latest Transactions</p>
-          </div>
+          const block = this.state.bdata.map(res => {
+            var localTime = moment.utc(res.timestamp * 1000).toDate();
+            return (
+              <div className="blockcard">
+                <div className="row">
+                  <div className="col-md-1 col-0">
+                    <h5>Bk</h5>
+                  </div>
+                  <div className="col-md-3 col-9">
+                    <p><a href={"/block/"+res.number}>{res.number}</a></p>
+                    <p><span>{moment(localTime).fromNow()}</span></p>
+                  </div>
+                  <div className="col-md-5 col-8">
+                    <p>Fee Recipient <a href={"/address/" + res.miner}>{res.miner.substring(0, 20)}...</a></p>
+                    <p><a href={"/txs?block="+res.number}>{res.transactions.length} txns</a> <span>{moment(localTime).fromNow()}</span></p>
+                  </div>
+                  <div className="col-md-3 col-4">
+                    <p className="ethval">0 {name}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })
 
-          <div class="blockcardhome">
+          const trx = this.state.tdata.map(res1 => {
+            var localTime = moment.utc(res1.timeStamp * 1000).toDate();
+            return (
+              <div className="blockcard">
+                <div className="row">
+                  <div className="col-md-1 col-0">
+                    <h6>Tx</h6>
+                  </div>
+                  <div className="col-md-3 col-12">
+                    <p><span className="txword">TX </span><a href={"/tx/" + res1.hash}>{res1.hash.substring(0, 15)}...</a></p>
+                    <p><span className="txsecond">{moment(localTime).fromNow()}</span></p>
+                  </div>
+                  <div className="col-md-5 col-8">
+                    <p>From <a href={"/address/" + res1.from}>{res1.from !== null ? res1.from.substring(0, 20) + "..." : "Null"}</a></p>
+                    <p>To <a href={"/address/" + res1.to}>{res1.to !== null ? res1.to.substring(0, 20) + "..." : "Null"}</a></p>
+                  </div>
+                  <div className="col-md-3 col-4">
+                    <p className="ethval">{(res1.value/1000000000000000000).toFixed(res1.value/1000000000000000000 > 0 ? 5 : 0)} {name}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })
 
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
+          return (
+            <React.Fragment>
+              <div className="row">
+                <div className="col-md-6 bk61">
+                  <div className="blockhome">
+                    <div className="blockheadtitle">
+                      <p>Latest Blocks</p>
+                    </div>
+                    <div className="blockcardhome">
+                      {block}
+                    </div>
+                    <div className="blockviewbtn">
+                      <a href="/blocks" className="btn btn-primary shadow-none w-100">View all blocks</a>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
-            <div class="blockcard">
-              <div class="row">
-                <div class="col-md-1 col-0">
-                  <h6>Tx</h6>
-                </div>
-                <div class="col-md-3 col-12">
-                  <p><span class="txword">TX# </span><a href="/tx/">0xcb11e6eeac5dae...</a></p>
-                  <p><span class="txsecond">14 secs ago</span></p>
-                </div>
-                <div class="col-md-5 col-8">
-                  <P>From <a href="/address/">0x95222290dd7278aa3dd...</a></P>
-                  <p>To <a href="/address/">0x95222290dd7278aa3dd...</a></p>
-                </div>
-                <div class="col-md-3 col-4">
-                  <p class="ethval">0.05021 Eth</p>
-                </div>
-              </div>
-            </div>
 
-            
-          </div>
+                <div className="col-md-6 bk62">
+                  <div className="blockhome">
+                    <div className="blockheadtitle">
+                      <p>Latest Transactions</p>
+                    </div>
+                    <div className="blockcardhome">
+                      {trx}
+                    </div>
 
-          <div class="blockviewbtn">
-            <a href="/txs" class="btn btn-primary shadow-none w-100">View all transactions</a>
-          </div>
-        </div>
-      </div>
-    </div>
+                    <div className="blockviewbtn">
+                      <a href="/txs" className="btn btn-primary shadow-none w-100">View all transactions</a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+
+            </React.Fragment>
+          )
+        }
+
+      }
+      ReactDOM.render(<App />, document.getElementById('app'));
+    </script>
+    <div id="app"></div>
 
   </div>
 
-    <script>
-      var chart = LightweightCharts.createChart(document.getElementById("myChart"), {
+  <script>
+    var data = [];
+    axios.get("/api/trx-chart")
+      .then(res => {
+        //console.log(res.data)
+        data = res.data;
+        if (res.data.length > 0) {
+          document.getElementById("todaytrx").innerText = data[0].value;
+          document.getElementById("lasttrx").innerHTML = data[data.length - 1].value;
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
 
-        rightPriceScale: {
-          visible: false,
-          borderColor: '#ffffff',
+    var chart = LightweightCharts.createChart(document.getElementById("myChart"), {
+
+      rightPriceScale: {
+        visible: false,
+        borderColor: '#ffffff',
+      },
+      leftPriceScale: {
+        visible: false,
+        borderColor: '#ffffff',
+      },
+      layout: {
+        backgroundColor: '#ffffff',
+        textColor: 'rgb(18, 22, 28)',
+      },
+      handleScale: {
+        pressedMouseMove: false
+      },
+      grid: {
+        horzLines: {
+          color: '#ffffff',
+          visible: false
         },
-        leftPriceScale: {
-          visible: false,
-          borderColor: '#ffffff',
+        vertLines: {
+          color: '#ffffff',
+          visible: false
         },
-        layout: {
-          backgroundColor: '#ffffff',
-          textColor: 'rgb(18, 22, 28)',
-        },
-        handleScale: {
-          pressedMouseMove: false
-        },
-        grid: {
-          horzLines: {
-            color: '#ffffff',
-            visible: false
-          },
-          vertLines: {
-            color: '#ffffff',
-            visible: false
-          },
-        },
-        crosshair: {
-          mode: LightweightCharts.CrosshairMode.Normal,
-        },
-        timeScale: {
-          borderColor: '#ffffff',
-        },
-        handleScroll: {
-          vertTouchDrag: false,
-        },
-      });
+      },
+      crosshair: {
+        mode: LightweightCharts.CrosshairMode.Normal,
+      },
+      timeScale: {
+        borderColor: '#ffffff',
+      },
+      handleScroll: {
+        vertTouchDrag: false,
+      },
+    });
+
+    setTimeout(() => {
       chart.timeScale().fitContent();
       chart.addLineSeries({
         color: 'rgb(18, 22, 28)',
         lineWidth: 1,
         priceLineVisible: false
-      }).setData([
-        { time: { year: 2018, month: 9, day: 22 }, value: 25.531816900940186 },
-        { time: { year: 2018, month: 12, day: 16 }, value: 158 },
-        { time: { year: 2018, month: 12, day: 17 }, value: 200 },
-        { time: { year: 2018, month: 12, day: 18 }, value: 86.66224375818467 },
-        { time: { year: 2019, month: 12, day: 18 }, value: 765 },
-        { time: { year: 2020, month: 12, day: 18 }, value: 435 },
-      ]);
+      }).setData(data);
+    }, 500)
 
-      this.resizeObserver = new ResizeObserver(entries => {
-        if (entries.length === 0 || entries[0].target !== document.getElementById('myChart')) { return; }
-        const newRect = entries[0].contentRect;
-        chart.applyOptions({ height: newRect.height, width: newRect.width });
-      })
-      this.resizeObserver.observe(document.getElementById("myChart"));
+    this.resizeObserver = new ResizeObserver(entries => {
+      if (entries.length === 0 || entries[0].target !== document.getElementById('myChart')) { return; }
+      const newRect = entries[0].contentRect;
+      chart.applyOptions({ height: newRect.height, width: newRect.width });
+    })
+    this.resizeObserver.observe(document.getElementById("myChart"));
 
-    </script>
+  </script>
 
-    <%- include("layout/footer") %>
+  <%- include("layout/footer") %>
