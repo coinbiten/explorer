@@ -9,6 +9,8 @@ var trxcollection = db.collection("transaction")
 var blockscan = db.collection("blockscan")
 var pricecollect = db.collection("price")
 require("./blockscanner")
+const abi = require('web3-eth-abi')
+const moment = require("moment")
 
 router.get("/priceupdate",(req,res)=>{
   fetch(new Request(config.livecoinwatchapi), {
@@ -45,9 +47,11 @@ router.get("/priceupdate",(req,res)=>{
 router.get("/blocks",(req,res)=>{
   var limits = 50
   var sorts = -1
+  var page =1;
   if(req.query.limit!=="" && req.query.limit!==undefined){
     limits=parseInt(req.query.limit)
   }
+
   if(req.query.sort!=="" && req.query.sort!==undefined){
     if(req.query.sort=="desc"){
       sorts=-1
@@ -56,8 +60,11 @@ router.get("/blocks",(req,res)=>{
       sorts=1
     }
   }
+  if(req.query.page!=="" && req.query.page!==undefined){
+    page=parseInt(req.query.page)*limits
+  }
   var blocks=[]
-  blockcollection.find( { } ).sort({number:sorts}).limit(limits).toArray(function(err, result) {
+  blockcollection.find().sort({number:sorts}).skip(page).limit(limits).toArray(function(err, result) {
     if (err){
       res.json([])
     }else{
@@ -115,6 +122,7 @@ router.get("/latest-block",(req,res)=>{
 router.get("/trxs",(req,res)=>{
   var limits = 100
   var sorts = -1
+  var page=1;
   if(req.query.limit!=="" && req.query.limit!==undefined){
     limits=parseInt(req.query.limit)
   }
@@ -126,8 +134,11 @@ router.get("/trxs",(req,res)=>{
       sorts=1
     }
   }
+  if(req.query.page!=="" && req.query.page!==undefined){
+    page=parseInt(req.query.page)*limits
+  }
   var trx=[]
-  trxcollection.find( { } ).sort({number:sorts}).limit(limits).toArray(function(err, result) {
+  trxcollection.find().sort({number:sorts}).skip(page).limit(limits).toArray(function(err, result) {
     if (err){
       res.json([])
     }else{
@@ -138,6 +149,34 @@ router.get("/trxs",(req,res)=>{
     }
   })
   
+})
+
+router.get("/trx-count",(req,res)=>{
+  trxcollection.count(function(error,result){
+    if(error){
+      res.json({trx:0,status:"Failed"})
+    }else{
+      res.json({trx:result,status:"Query Success"})
+    }
+  })
+  
+})
+
+router.get("/trx-chart",(req,res)=>{
+  var dateprev = new Date();
+  dateprev.setDate(dateprev.getDate() - 15);
+  var fromdate = moment(dateprev).format("YYYY-MM-DD");
+  var currentdate = new Date();
+  var todate = moment(currentdate).format("YYYY-MM-DD");
+  trxcollection.find({
+    timestamp: {
+        $gt: fromdate,
+        $lt: todate
+    }
+  }).toArray(function(err,result){
+    res.json(result)
+  })
+  //res.json({fromdate,todate})
 })
 
 router.get("/trx/:hash",(req,res)=>{
@@ -264,12 +303,18 @@ router.get('/test', (req, res) => {
         //console.log(rs.logs)
         
       });
-      web3.eth.getTransactionReceipt("0x383020f1ffbc26c623a11d76331c1a7e9ae0884a131a2ed66be02ff5824876df").then(console.log);
-      web3.eth.getTransaction("0x335c253898d30011db651890ff16ea8553f70711fe54ef51fcc6d93a9fe05910")
+      //contract creation
+      web3.eth.getTransactionReceipt("0x30775355de0f873bb93dcf26005306eac0aee2b902424d370df50ffd5637838f").then(console.log);
+      web3.eth.getTransaction("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984")
       .then(rs=>{
         console.log(rs)
         //console.log(rs.logs)
       });*/
+      //Contract transaction 
+      web3.eth.getTransactionReceipt("0x88b3292970da72923efbe7663ded7e961a2fa3d719f6d237b49934ba3c335f53")
+      .then(ress=>{
+        console.log(ress)
+      })
       web3.eth.getBlock(162,true).then(console.log);
       //web3.eth.getTransaction("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
      // web3.eth.getTransactionReceipt("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
