@@ -164,19 +164,30 @@ router.get("/trx-count",(req,res)=>{
 
 router.get("/trx-chart",(req,res)=>{
   var dateprev = new Date();
-  dateprev.setDate(dateprev.getDate() - 15);
+  dateprev.setDate(dateprev.getDate() - 24);
   var fromdate = moment(dateprev).format("YYYY-MM-DD");
   var currentdate = new Date();
+  currentdate.setDate(currentdate.getDate() + 1);
   var todate = moment(currentdate).format("YYYY-MM-DD");
+  var data=[];
   trxcollection.find({
     timestamp: {
         $gt: fromdate,
         $lt: todate
     }
   }).toArray(function(err,result){
-    res.json(result)
+    result.map(ress=>{
+       const found = data.some(el => el.time === ress.timestamp);
+       if(!found){
+        data.push({time:ress.timestamp,value:1})
+       }else{
+        objIndex = data.findIndex((obj => obj.time == ress.timestamp));
+        data[objIndex].value +=1
+       }
+    })
+    res.json(data)
   })
-  //res.json({fromdate,todate})
+  
 })
 
 router.get("/trx/:hash",(req,res)=>{
