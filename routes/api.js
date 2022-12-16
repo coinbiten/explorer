@@ -44,6 +44,27 @@ router.get("/priceupdate",(req,res)=>{
 
 })
 
+router.get("/getgasprice",(req,res)=>{
+  var price = 0;
+  var change24 =0
+  var change1h = 0;
+  pricecollect.find({id:1}).toArray(function(err, result) {
+    if (err){
+      price=0;
+    }else{
+      price = result[0].price;
+      change24 = result[0].change24;
+      change1h = result[0].change1h;
+      //res.json(result[0].change24)
+    }
+  })
+  web3.eth.getGasPrice(function(e, r) {
+     res.json({gwei:r/1000000000,gweidecimal:r,eth:r*21000/1000000000000000000,
+     price:price,change1h:change1h,change24:change24,supply:config.supply,csupply:config.csupply,
+     name:config.name,symbol:config.symbol
+    }) 
+    })
+})
 router.get("/blocks",(req,res)=>{
   var limits = 50
   var sorts = -1

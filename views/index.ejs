@@ -6,10 +6,10 @@
         <div class="searchhome">
           <div class="hselect">
             <select>
-              <option selected>All Filters</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option selected value="">All Filters</option>
+              <option value="Addresses">Addresses</option>
+              <option value="Block">Block</option>
+              <option value="TrxHash">Trx Hash</option>
             </select>
           </div>
           <div class="hinput"><input placeholder=" Search by Address / Txn Hash / Block / Token / Ens" /></div>
@@ -36,7 +36,7 @@
                 <p>
                   <%= symbol %> PRICE
                 </p>
-                <p>$1,249.94 @ 0.07371 BTC (-1.31%)</p>
+                <p id="priceshow">$0 (0%)</p>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@
                 <p>
                   MARKET CAP
                 </p>
-                <p>$150,646,362,864.00</p>
+                <p id="marketcap">$0</p>
               </div>
             </div>
           </div>
@@ -70,9 +70,38 @@
                 <p>
                   MED GAS PRICE
                 </p>
-                <p>
-                  5 Gwei ($0.68)
+                <p id="gasset">
+                  1 Gwei ($0)
                 </p>
+                <script>
+                  axios.get("/api/priceupdate")
+                    .then(res => {
+                      //console.log(res)
+                    })
+                    .catch(errr => {
+                      console.log(errr)
+                    })
+
+                  axios.get("/api/getgasprice")
+                    .then(res => {
+                      var gastousd = (res.data.eth * res.data.price);
+                      var color = "";
+                      var ch24h = parseFloat(res.data.change24);
+                      if (ch24h > 0) {
+                        color = "green";
+                      } else {
+                        color = "red";
+                      }
+                      var chadd = ch24h > 0 ? "+" + ch24h : "" + ch24h;
+                      document.getElementById("gasset").innerHTML = res.data.gwei + " Gwei ($" + gastousd.toFixed(gastousd > 1 ? 2 : gastousd >= 0.05 ? 4 : 8) + ")"
+                      document.getElementById("priceshow").innerHTML = "$" + res.data.price + " <span style='color:" + color + ";'>" + "(" + chadd + "%)<span>";
+                      document.getElementById("marketcap").innerHTML = "$" + (parseFloat(res.data.price) * res.data.csupply).toLocaleString("en-US")
+                      console.log(res.data.price)
+                    })
+                    .catch(errr => {
+                      console.log(errr)
+                    })
+                </script>
               </div>
             </div>
           </div>
@@ -99,23 +128,23 @@
               </div>
               <script>
                 axios.get("/api/block-count")
-                .then(res=>{
-                  document.getElementById("blockn").innerText=res.data.number;
-                  document.getElementById("blockn1").innerText=res.data.number;
-                  //console.log(res.data.number)
-                })
-                .catch(err=>{
-                  //
-                })
+                  .then(res => {
+                    document.getElementById("blockn").innerText = res.data.number;
+                    document.getElementById("blockn1").innerText = res.data.number;
+                    //console.log(res.data.number)
+                  })
+                  .catch(err => {
+                    //
+                  })
 
                 axios.get("/api/trx-count")
-                .then(res=>{
-                  document.getElementById("trx-count").innerText=res.data.trx +" (13.7 TPS)";
-                  //console.log(res.data)
-                })
-                .catch(err=>{
-                  //
-                })
+                  .then(res => {
+                    document.getElementById("trx-count").innerText = res.data.trx + " (13.7 TPS)";
+                    //console.log(res.data)
+                  })
+                  .catch(err => {
+                    //
+                  })
 
               </script>
             </div>
@@ -128,8 +157,8 @@
           <div class="row">
             <div class="col-md-2 col-2">
               <br />
-              <p id="lasttrx">10K</p><br /><br /><br /><br />
-              <p id="todaytrx">10K</p>
+              <p id="lasttrx">0</p><br /><br /><br /><br />
+              <p id="todaytrx">0</p>
             </div>
             <div class="col-md-10 col-10">
               <div id="myChart"></div>
@@ -179,12 +208,12 @@
                     <h5>Bk</h5>
                   </div>
                   <div className="col-md-3 col-9">
-                    <p><a href={"/block/"+res.number}>{res.number}</a></p>
+                    <p><a href={"/block/" + res.number}>{res.number}</a></p>
                     <p><span>{moment(localTime).fromNow()}</span></p>
                   </div>
                   <div className="col-md-5 col-8">
                     <p>Fee Recipient <a href={"/address/" + res.miner}>{res.miner.substring(0, 20)}...</a></p>
-                    <p><a href={"/txs?block="+res.number}>{res.transactions.length} txns</a> <span>{moment(localTime).fromNow()}</span></p>
+                    <p><a href={"/txs?block=" + res.number}>{res.transactions.length} txns</a> <span>{moment(localTime).fromNow()}</span></p>
                   </div>
                   <div className="col-md-3 col-4">
                     <p className="ethval">0 {name}</p>
@@ -211,7 +240,7 @@
                     <p>To <a href={"/address/" + res1.to}>{res1.to !== null ? res1.to.substring(0, 20) + "..." : "Null"}</a></p>
                   </div>
                   <div className="col-md-3 col-4">
-                    <p className="ethval">{(res1.value/1000000000000000000).toFixed(res1.value/1000000000000000000 > 0 ? 5 : 0)} {name}</p>
+                    <p className="ethval">{(res1.value / 1000000000000000000).toFixed(res1.value / 1000000000000000000 > 0 ? 5 : 0)} {name}</p>
                   </div>
                 </div>
               </div>
@@ -265,14 +294,23 @@
   </div>
 
   <script>
+    const formatCash = n => {
+      if (n < 1e3) return n;
+      if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(1) + "K";
+      if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(1) + "M";
+      if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
+      if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
+    };
+
+    //console.log(formatCash(1200));
     var data = [];
     axios.get("/api/trx-chart")
       .then(res => {
         //console.log(res.data)
         data = res.data;
         if (res.data.length > 0) {
-          document.getElementById("todaytrx").innerText = data[0].value;
-          document.getElementById("lasttrx").innerHTML = data[data.length - 1].value;
+          document.getElementById("todaytrx").innerText = formatCash(data[0].value);
+          document.getElementById("lasttrx").innerHTML = formatCash(data[data.length - 1].value);
         }
       })
       .catch(err => {
