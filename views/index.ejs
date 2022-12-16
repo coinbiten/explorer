@@ -5,20 +5,51 @@
       <div class="col-md-7">
         <div class="searchhome">
           <div class="hselect">
-            <select>
+            <select id="selectval">
               <option selected value="">All Filters</option>
               <option value="Addresses">Addresses</option>
               <option value="Block">Block</option>
               <option value="TrxHash">Trx Hash</option>
             </select>
           </div>
-          <div class="hinput"><input placeholder=" Search by Address / Txn Hash / Block / Token / Ens" /></div>
-          <div class="hsearch">
+          <div class="hinput"><input id="inputval" placeholder=" Search by Address / Txn Hash / Block / Token / Ens" /></div>
+          <div class="hsearch" onclick="onSearch()">
             <i class="fas fa-search"></i>
           </div>
         </div>
       </div>
     </div>
+    <script>
+      onSearch=()=>{
+        var val=document.getElementById("inputval").value; 
+        var selectval=document.getElementById("selectval").value; 
+        if(val!==""){
+          if(selectval==""){
+            if(val.length==42){
+              window.location.href = "/address/"+val
+            }
+            if(val.length>42){
+              window.location.href = "/tx/"+val
+            }
+            if(val.length<42){
+              window.location.href = "/block/"+val
+            }
+          }else{
+            if(selectval=="Addresses"){
+              window.location.href = "/address/"+val
+            }
+            if(selectval=="TrxHash"){
+              window.location.href = "/tx/"+val
+            }
+            if(selectval=="Block"){
+              window.location.href = "/block/"+val
+            }
+          }
+        }else{
+          alert("Input value is required")
+        }
+      }
+    </script>
     <p>Featured: Build Precise & Reliable Apps with <%= name %> APIs. <a href="/">Learn More!</a></p>
   </div>
 
