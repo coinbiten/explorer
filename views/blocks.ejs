@@ -75,7 +75,7 @@
                                 <td><a href={"/block/" + res.number}>{res.number}</a></td>
                                 <td>{moment(localTime).fromNow()}</td>
                                 <td>{res.transactions.length}</td>
-                                <td><a href={"/address" + res.miner}>{res.miner.substring(0, 20)}...</a></td>
+                                <td><a href={"/address/" + res.miner}>{res.miner.substring(0, 20)}...</a></td>
                                 <td>{res.gasUsed.toLocaleString("en-US")}</td>
                                 <td>{res.gasLimit.toLocaleString("en-US")}</td>
                                 <td>{res.gasUsed * res.gasLimit / 1000000000000000000} {name}</td>

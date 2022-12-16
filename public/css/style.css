@@ -338,7 +338,7 @@ div::-webkit-scrollbar {
   color: #3498db;
 }
 .blocktdhead{
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
 }
 
@@ -350,7 +350,7 @@ table {
 table td{
   padding-left: 20px;
 }
-tr:nth-child(even) {
+tr:nth-child(odd) {
   background-color: #f2f2f2;
   border: none;
 }
