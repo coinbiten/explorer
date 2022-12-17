@@ -184,47 +184,9 @@ router.get("/trx-count",(req,res)=>{
 })
 
 router.get("/pending-trx",(req,res)=>{
-  var p =[
-    {
-      "blockHash": null,
-      "blockNumber": null,
-      "from": "0x910ec9925DCe49B83923c9266dF58e694b740C36",
-      "gas": 21000,
-      "gasPrice": "1000000000",
-      "hash": "0x7e8714bda3cf5af47302403d4534050e1fc705d44a5817d3bebe27cf23625978",
-      "input": "0x",
-      "nonce": 42,
-      "to": "0x9084eB76601aa9f88Be7E92a18cBCba23227EC5a",
-      "transactionIndex": null,
-      "value": "20000000000000000000",
-      "type": 0,
-      "chainId": "0xa6",
-      "v": "0x16f",
-      "r": "0xeeac722d84ba1e1fedeb3a378cea14b094df4c43265bda65e217ba7b001688cf",
-      "s": "0x646ec476f225a04db075f3e9f8d4ef25cfb59d9aaa5a5806512a1591a28d8ce6"
-    },
-    {
-      "blockHash": null,
-      "blockNumber": null,
-      "from": "0x910ec9925DCe49B83923c9266dF58e694b740C36",
-      "gas": 21000,
-      "gasPrice": "1000000000",
-      "hash": "0x7e8714bda3cf5af47302403d4534050e1fc705d44a5817d3bebe27cf23625978",
-      "input": "0x",
-      "nonce": 42,
-      "to": "0x9084eB76601aa9f88Be7E92a18cBCba23227EC5a",
-      "transactionIndex": null,
-      "value": "20000000000000000000",
-      "type": 0,
-      "chainId": "0xa6",
-      "v": "0x16f",
-      "r": "0xeeac722d84ba1e1fedeb3a378cea14b094df4c43265bda65e217ba7b001688cf",
-      "s": "0x646ec476f225a04db075f3e9f8d4ef25cfb59d9aaa5a5806512a1591a28d8ce6"
-    }
-  ]
   web3.eth.getPendingTransactions()
   .then(ress=>{
-    res.json(p)
+    res.json(ress)
   })
   .catch(err=>{
     res.json([])
