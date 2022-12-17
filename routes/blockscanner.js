@@ -6,14 +6,6 @@ var blockscan = db.collection("blockscan")
 const moment = require("moment")
 const abi = require('web3-eth-abi')
 
-web3.eth.getTransactionReceipt("0x88b3292970da72923efbe7663ded7e961a2fa3d719f6d237b49934ba3c335f53")
-      .then(ress=>{
-        //console.log(ress)
-        //let decoded = abi.decodeParameters(['string', 'string'], ress.logs[0].topics[1]);
-        //console.log("topics ",ress.logs[0].topics[1])
-        //console.log("decoded",web3.eth.abi.decodeLog(['string', 'uint256'], ress.logs[0].topics[1]))
-      })
-
 web3ws =()=>{
     var subscription = web3.eth.subscribe('newBlockHeaders', function(error, result){
         if (!error && result !==null) {
@@ -145,5 +137,15 @@ blockScan=async()=> {
     
   }
 
-  var blockScaning = blockScan()
+  var blockScaning = blockScan().then(res=>{
+    console.log("Web3 connected")
+  })
+  .catch(err=>{
+    console.log("Web3 disconnected error")
+    try{
+      blockScaning();
+    }catch(error){
+      console.log("Web3 connecting ....")
+    }
+  })
   module.exports=blockScaning
