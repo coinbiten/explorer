@@ -6,7 +6,16 @@
                     More!</a></p>
 
         <script type="text/babel">
-            var name = "<%= symbol %>"
+            var name = "<%= symbol %>";
+            var baseBlockReward = parseFloat("<%= baseBlockReward %>");
+            function getTrxfee(trx){
+                var fee=0;
+                trx.forEach(function (item, index) {
+                var gasfees = (item.gas*parseFloat(item.gasPrice))/1000000000000000000;
+                    fee +=gasfees;
+                })
+                return fee;
+            }
             class Blocks extends React.Component {
                 constructor(props) {
                     super(props);
@@ -14,29 +23,29 @@
                         data: [],
                         loader: true,
                         lastblock: 0,
-                        from:0,
-                        to:0,
-                        page:0,
-                        limit:25,
+                        from: 0,
+                        to: 0,
+                        page: 0,
+                        limit: 25,
                     }
                 }
 
                 async componentDidMount() {
-                    const search =await window.location.search;
+                    const search = await window.location.search;
                     const params = new URLSearchParams(search);
-                    const p =await params.get('p');
-                    const l =await params.get('limit');
-                    if(p){
-                        await this.setState({page:p})
+                    const p = await params.get('p');
+                    const l = await params.get('limit');
+                    if (p) {
+                        await this.setState({ page: p })
                     }
-                    if(l){
-                        await this.setState({limit:l})
+                    if (l) {
+                        await this.setState({ limit: l })
                     }
-                    await axios.get("/api/blocks?limit="+this.state.limit+"&sort=desc"+"&page="+this.state.page)
+                    await axios.get("/api/blocks?limit=" + this.state.limit + "&sort=desc" + "&page=" + this.state.page)
                         .then(res => {
                             this.setState({ data: res.data, loader: false })
-                            if(res.data.length>0){
-                                this.setState({from:res.data[res.data.length -1].number,to:res.data[0].number})
+                            if (res.data.length > 0) {
+                                this.setState({ from: res.data[res.data.length - 1].number, to: res.data[0].number })
                             }
                         })
                         .catch(error => {
@@ -55,21 +64,27 @@
 
                 }
 
-                onLimit=(e)=>{
-                    this.setState({limit:e.target.value})
+                onLimit = (e) => {
+                    this.setState({ limit: e.target.value })
                     this.componentDidMount()
                 }
 
                 render() {
                     var smallerthen = "<";
                     var geaterthen = ">";
-                    var total = parseInt(this.state.lastblock/this.state.limit);
+                    var total = parseInt(this.state.lastblock / this.state.limit);
                     var page = this.state.page;
                     var limit = this.state.limit;
-                    var nextpage = parseFloat(page)+1;
-                    var prevpage = parseFloat(page)-1;
+                    var nextpage = parseFloat(page) + 1;
+                    var prevpage = parseFloat(page) - 1;
                     var blocks = this.state.data.map(res => {
+                        const trxfee = getTrxfee(res.transactions);
+                        const nephewReward = baseBlockReward / 32;
+                        const uncleCount = res.uncles.length;
+                        const totalNephewReward = uncleCount * nephewReward;
+                        var reward = baseBlockReward+totalNephewReward+trxfee;
                         var localTime = moment.utc(res.timestamp * 1000).toDate();
+                        
                         return (
                             <tr>
                                 <td><a href={"/block/" + res.number}>{res.number}</a></td>
@@ -78,8 +93,7 @@
                                 <td><a href={"/address/" + res.miner}>{res.miner.substring(0, 20)}...</a></td>
                                 <td>{res.gasUsed.toLocaleString("en-US")}</td>
                                 <td>{res.gasLimit.toLocaleString("en-US")}</td>
-                                <td>{res.gasUsed * res.gasLimit / 1000000000000000000} {name}</td>
-                                <td>0 {name}</td>
+                                <td>{reward} {name}</td>
                             </tr>
                         )
                     })
@@ -94,11 +108,11 @@
                                         </div>
                                         <div className="col-md-6">
                                             <ul>
-                                                <li><a href={"/blocks"} disabled={page==0?true:false} className={page==0?"inactive":"active"}>First</a></li>
-                                                <li><a href={"/blocks?p="+prevpage+"&limit="+limit} disabled={page==0?true:false} className={page==0?"inactive":"active"}>{smallerthen}</a> </li>
-                                                <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock/this.state.limit)}</li>
-                                                <li><a href={"/blocks?p="+nextpage+"&limit="+limit} disabled={page==total?true:false} className={page==total?"inactive":"active"}> {geaterthen} </a></li>
-                                                <li><a href={"/blocks?p="+total+"&limit="+limit} disabled={page==total?true:false} className={page==total?"inactive":"active"}> Last </a></li>
+                                                <li><a href={"/blocks"} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>First</a></li>
+                                                <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>{smallerthen}</a> </li>
+                                                <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock / this.state.limit)}</li>
+                                                <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> {geaterthen} </a></li>
+                                                <li><a href={"/blocks?p=" + total + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> Last </a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -113,7 +127,6 @@
                                             <td className="blocktdhead">Miner</td>
                                             <td className="blocktdhead">Gas Used</td>
                                             <td className="blocktdhead">Gas Limit</td>
-                                            <td className="blocktdhead">Base Fee</td>
                                             <td className="blocktdhead">Reward</td>
                                         </tr>
 
@@ -140,11 +153,11 @@
                                         </div>
                                         <div className="col-md-6">
                                             <ul>
-                                                <li><a href={"/blocks"} disabled={page==0?true:false} className={page==0?"inactive":"active"}>First</a></li>
-                                                <li><a href={"/blocks?p="+prevpage+"&limit="+limit} disabled={page==0?true:false} className={page==0?"inactive":"active"}>{smallerthen}</a> </li>
-                                                <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock/this.state.limit)}</li>
-                                                <li><a href={"/blocks?p="+nextpage+"&limit="+limit} disabled={page==total?true:false} className={page==total?"inactive":"active"}> {geaterthen} </a></li>
-                                                <li><a href={"/blocks?p="+total+"&limit="+limit} disabled={page==total?true:false} className={page==total?"inactive":"active"}> Last </a></li>
+                                                <li><a href={"/blocks"} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>First</a></li>
+                                                <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>{smallerthen}</a> </li>
+                                                <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock / this.state.limit)}</li>
+                                                <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> {geaterthen} </a></li>
+                                                <li><a href={"/blocks?p=" + total + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> Last </a></li>
                                             </ul>
                                         </div>
                                     </div>

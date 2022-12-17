@@ -7,6 +7,7 @@ const data={
     symbol:"BTN",
     decimal:18,
     networkid:166,
+    baseBlockReward:2,
     http_provider:'http://84.46.247.245:8085',
     ws_provider:'ws://84.46.247.245:9091',
     dbname:"biten",

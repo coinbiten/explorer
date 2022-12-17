@@ -4,11 +4,11 @@ const router = express.Router();
 var config = require("../config/config")
 
 router.get('/', (request, response) => { 
-  response.render("index.ejs", {title: config.networt_name+" | Explorer",name:config.coinName,symbol:config.symbol,networt_name:config.networt_name,rpc:config.http_provider,ws:config.ws_provider,networtid:config.networkid});
+  response.render("index.ejs", {title: config.networt_name+" | Explorer",name:config.coinName,symbol:config.symbol,networt_name:config.networt_name,rpc:config.http_provider,ws:config.ws_provider,networtid:config.networkid,baseBlockReward:config.baseBlockReward});
 })
   
 router.get('/blocks', (request, response) => { 
-  response.render("blocks.ejs", {title: config.networt_name+"  All Blocks",name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
+  response.render("blocks.ejs", {title: config.networt_name+"  All Blocks",name:config.coinName,symbol:config.symbol,networt_name:config.networt_name,baseBlockReward:config.baseBlockReward});
 })
 
 router.get('/txs', (request, response) => { 

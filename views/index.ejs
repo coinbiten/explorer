@@ -12,7 +12,8 @@
               <option value="TrxHash">Trx Hash</option>
             </select>
           </div>
-          <div class="hinput"><input id="inputval" placeholder=" Search by Address / Txn Hash / Block / Token / Ens" /></div>
+          <div class="hinput"><input id="inputval" placeholder=" Search by Address / Txn Hash / Block / Token / Ens" />
+          </div>
           <div class="hsearch" onclick="onSearch()">
             <i class="fas fa-search"></i>
           </div>
@@ -20,32 +21,32 @@
       </div>
     </div>
     <script>
-      onSearch=()=>{
-        var val=document.getElementById("inputval").value; 
-        var selectval=document.getElementById("selectval").value; 
-        if(val!==""){
-          if(selectval==""){
-            if(val.length==42){
-              window.location.href = "/address/"+val
+      onSearch = () => {
+        var val = document.getElementById("inputval").value;
+        var selectval = document.getElementById("selectval").value;
+        if (val !== "") {
+          if (selectval == "") {
+            if (val.length == 42) {
+              window.location.href = "/address/" + val
             }
-            if(val.length>42){
-              window.location.href = "/tx/"+val
+            if (val.length > 42) {
+              window.location.href = "/tx/" + val
             }
-            if(val.length<42){
-              window.location.href = "/block/"+val
+            if (val.length < 42) {
+              window.location.href = "/block/" + val
             }
-          }else{
-            if(selectval=="Addresses"){
-              window.location.href = "/address/"+val
+          } else {
+            if (selectval == "Addresses") {
+              window.location.href = "/address/" + val
             }
-            if(selectval=="TrxHash"){
-              window.location.href = "/tx/"+val
+            if (selectval == "TrxHash") {
+              window.location.href = "/tx/" + val
             }
-            if(selectval=="Block"){
-              window.location.href = "/block/"+val
+            if (selectval == "Block") {
+              window.location.href = "/block/" + val
             }
           }
-        }else{
+        } else {
           alert("Input value is required")
         }
       }
@@ -200,7 +201,16 @@
     </div>
 
     <script type="text/babel">
-      var name = "<%= symbol %>"
+      var name = "<%= symbol %>";
+      var baseBlockReward = parseFloat("<%= baseBlockReward %>");
+      function getTrxfee(trx) {
+        var fee = 0;
+        trx.forEach(function (item, index) {
+          var gasfees = (item.gas * parseFloat(item.gasPrice)) / 1000000000000000000;
+          fee += gasfees;
+        })
+        return fee;
+      }
       class App extends React.Component {
         constructor(props) {
           super(props);
@@ -232,6 +242,11 @@
 
           const block = this.state.bdata.map(res => {
             var localTime = moment.utc(res.timestamp * 1000).toDate();
+            const trxfee = getTrxfee(res.transactions);
+            const nephewReward = baseBlockReward / 32;
+            const uncleCount = res.uncles.length;
+            const totalNephewReward = uncleCount * nephewReward;
+            var reward = baseBlockReward + totalNephewReward + trxfee;
             return (
               <div className="blockcard">
                 <div className="row">
@@ -247,7 +262,7 @@
                     <p><a href={"/txs?block=" + res.number}>{res.transactions.length} txns</a> <span>{moment(localTime).fromNow()}</span></p>
                   </div>
                   <div className="col-md-3 col-4">
-                    <p className="ethval">0 {name}</p>
+                    <p className="ethval">{reward} {name}</p>
                   </div>
                 </div>
               </div>
@@ -256,6 +271,7 @@
 
           const trx = this.state.tdata.map(res1 => {
             var localTime = moment.utc(res1.timeStamp * 1000).toDate();
+            var val = res1.value / 1000000000000000000;
             return (
               <div className="blockcard">
                 <div className="row">
@@ -271,7 +287,7 @@
                     <p>To <a href={"/address/" + res1.to}>{res1.to !== null ? res1.to.substring(0, 20) + "..." : "Null"}</a></p>
                   </div>
                   <div className="col-md-3 col-4">
-                    <p className="ethval">{(res1.value / 1000000000000000000).toFixed(res1.value / 1000000000000000000 > 0 ? 5 : 0)} {name}</p>
+                    <p className="ethval">{(res1.value / 1000000000000000000).toFixed( val> 1 ? 2 : val==0?0:5)} {name}</p>
                   </div>
                 </div>
               </div>
