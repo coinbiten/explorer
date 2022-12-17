@@ -8,11 +8,11 @@
         <script type="text/babel">
             var name = "<%= symbol %>";
             var baseBlockReward = parseFloat("<%= baseBlockReward %>");
-            function getTrxfee(trx){
-                var fee=0;
+            function getTrxfee(trx) {
+                var fee = 0;
                 trx.forEach(function (item, index) {
-                var gasfees = (item.gas*parseFloat(item.gasPrice))/1000000000000000000;
-                    fee +=gasfees;
+                    var gasfees = (item.gas * parseFloat(item.gasPrice)) / 1000000000000000000;
+                    fee += gasfees;
                 })
                 return fee;
             }
@@ -82,9 +82,9 @@
                         const nephewReward = baseBlockReward / 32;
                         const uncleCount = res.uncles.length;
                         const totalNephewReward = uncleCount * nephewReward;
-                        var reward = baseBlockReward+totalNephewReward+trxfee;
+                        var reward = baseBlockReward + totalNephewReward + trxfee;
                         var localTime = moment.utc(res.timestamp * 1000).toDate();
-                        
+
                         return (
                             <tr>
                                 <td><a href={"/block/" + res.number}>{res.number}</a></td>
@@ -108,11 +108,20 @@
                                         </div>
                                         <div className="col-md-6">
                                             <ul>
-                                                <li><a href={"/blocks"} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>First</a></li>
-                                                <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>{smallerthen}</a> </li>
+                                                {
+                                                    page > 0 ? <React.Fragment>
+                                                        <li><a href={"/blocks"}>First</a></li>
+                                                        <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
+                                                    </React.Fragment> : ""
+                                                }
                                                 <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock / this.state.limit)}</li>
-                                                <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> {geaterthen} </a></li>
-                                                <li><a href={"/blocks?p=" + total + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> Last </a></li>
+                                                {
+                                                    page < total ? <React.Fragment>
+                                                        <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} > {geaterthen} </a></li>
+                                                        <li><a href={"/blocks?p=" + total + "&limit=" + limit} > Last </a></li>
+                                                    </React.Fragment> : ""
+                                                }
+
                                             </ul>
                                         </div>
                                     </div>
@@ -153,11 +162,19 @@
                                         </div>
                                         <div className="col-md-6">
                                             <ul>
-                                                <li><a href={"/blocks"} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>First</a></li>
-                                                <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit} disabled={page == 0 ? true : false} className={page == 0 ? "inactive" : "active"}>{smallerthen}</a> </li>
+                                                {
+                                                    page > 0 ? <React.Fragment>
+                                                        <li><a href={"/blocks"}>First</a></li>
+                                                        <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
+                                                    </React.Fragment> : ""
+                                                }
                                                 <li className="countpage">Page {this.state.page} of {parseInt(this.state.lastblock / this.state.limit)}</li>
-                                                <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> {geaterthen} </a></li>
-                                                <li><a href={"/blocks?p=" + total + "&limit=" + limit} disabled={page == total ? true : false} className={page == total ? "inactive" : "active"}> Last </a></li>
+                                                {
+                                                    page < total ? <React.Fragment>
+                                                        <li><a href={"/blocks?p=" + nextpage + "&limit=" + limit} > {geaterthen} </a></li>
+                                                        <li><a href={"/blocks?p=" + total + "&limit=" + limit} > Last </a></li>
+                                                    </React.Fragment> : ""
+                                                }
                                             </ul>
                                         </div>
                                     </div>

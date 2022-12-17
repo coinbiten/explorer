@@ -397,6 +397,9 @@ tr:nth-child(odd) {
 }
 .blockspaginate ul li a{
   text-decoration: none;
+  width: 100%;
+  height: 100%;
+  
 }
 .blockspaginate ul li .inactive{
   color: rgb(70, 67, 67);
