@@ -137,15 +137,5 @@ blockScan=async()=> {
     
   }
 
-  var blockScaning = blockScan().then(res=>{
-    console.log("Web3 connected")
-  })
-  .catch(err=>{
-    console.log("Web3 disconnected error")
-    try{
-      blockScaning();
-    }catch(error){
-      console.log("Web3 connecting ....")
-    }
-  })
-  module.exports=blockScaning
+
+  module.exports=blockScan
