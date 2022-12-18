@@ -21,7 +21,7 @@ router.get('/txsPending', (request, response) => {
 
 router.get('/block/:id', (request, response) => { 
   var id = request.params.id
-  response.render("blockview.ejs", {title: config.networt_name+"  Blocks #"+id ,block:id,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
+  response.render("blockview.ejs", {title: config.networt_name+"  Blocks #"+id ,block:id,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name,baseBlockReward:config.baseBlockReward});
 })
 
 router.get('/tx/:hash', (request, response) => { 
