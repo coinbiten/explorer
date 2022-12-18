@@ -222,7 +222,7 @@
           }
         }
         async componentDidMount() {
-          await axios.get("/api/blocks?limit=10&sort=desc")
+          await axios.get("/api/blocks?limit=15")
             .then(res => {
               this.setState({ bdata: res.data, loader: false })
             })
