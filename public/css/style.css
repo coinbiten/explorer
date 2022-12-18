@@ -626,3 +626,23 @@ tr:nth-child(odd) {
   width: 20px;
   color: rgb(71, 70, 70);
 }
+.OUT{
+  background: rgb(240, 229, 201);
+  color: rgb(212, 161, 31);
+  padding: 5px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 10px;
+  padding-top: 7px;
+  font-weight: bold;
+}
+.IN{
+  background: rgb(196, 238, 233);
+  color: rgb(45, 164, 197);
+  padding: 5px;
+  text-align: center;
+  border-radius: 3px;
+  font-size: 10px;
+  padding-top: 7px;
+  font-weight: bold;
+}
