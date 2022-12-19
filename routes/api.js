@@ -8,26 +8,21 @@ var blockcollection = db.collection("blocks")
 var trxcollection = db.collection("transaction")
 var blockscan = db.collection("blockscan")
 var pricecollect = db.collection("price")
+
 require("./blockscanner")
 const abi = require('web3-eth-abi')
 const moment = require("moment")
 blockScan()
-  .then(res => {
-    //console.log(res)
-  })
-  .catch(err => {
-    console.log(err)
-  })
 
-  function getBlockFn(number){
-    web3.eth.getBlock(number)
+function getBlockFn(number) {
+  web3.eth.getBlock(number)
     .then(rs => {
       return rs
     })
     .catch(err => {
       return []
     })
-  }
+}
 
 router.get("/priceupdate", (req, res) => {
   fetch(new Request(config.livecoinwatchapi), {
@@ -87,7 +82,7 @@ router.get("/blocks", (req, res) => {
   blockScan()
   var limits = 50
   var sorts = -1
-  var page = 1;
+  var page = 0;
   if (req.query.limit !== "" && req.query.limit !== undefined) {
     limits = parseInt(req.query.limit)
   }
@@ -101,7 +96,7 @@ router.get("/blocks", (req, res) => {
     }
   }
   if (req.query.page !== "" && req.query.page !== undefined) {
-    page = parseInt(req.query.page) * limits
+    page = (parseInt(req.query.page)-1) * limits
   }
   var blocks = []
   blockcollection.find().sort({ number: sorts }).skip(page).limit(limits)
@@ -181,7 +176,7 @@ router.get("/trxs", (req, res) => {
     }
   }
   if (req.query.page !== "" && req.query.page !== undefined) {
-    page = parseInt(req.query.page) * limits
+    page = (parseInt(req.query.page)-1) * limits
   }
   var trx = []
   trxcollection.find().sort({ number: sorts }).skip(page).limit(limits).toArray(function (err, result) {
@@ -203,13 +198,13 @@ router.get("/trxs", (req, res) => {
 })
 
 router.get("/trx-count", (req, res) => {
-  trxcollection.count(function (error, result) {
-    if (error) {
+  trxcollection.distinct("hash")
+    .then(result => {
+      res.json({ trx: result.length, status: "Query Success" })
+    })
+    .catch(errr => {
       res.json({ trx: 0, status: "Failed" })
-    } else {
-      res.json({ trx: result, status: "Query Success" })
-    }
-  })
+    })
 
 })
 

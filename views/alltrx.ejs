@@ -13,7 +13,7 @@
                     this.state = {
                         data: [],
                         loader: true,
-                        page: 0,
+                        page: 1,
                         limit: 25,
                         trxcount: 0,
                     }
@@ -89,7 +89,7 @@
                                         <div class="col-md-6">
                                             <ul>
                                                 {
-                                                    page > 0 ? <React.Fragment>
+                                                    page > 1 ? <React.Fragment>
                                                         <li><a href={"/txs"}>First</a></li>
                                                         <li><a href={"/txs?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
                                                     </React.Fragment> : ""
@@ -154,7 +154,7 @@
                                         <div class="col-md-6">
                                             <ul>
                                                 {
-                                                    page > 0 ? <React.Fragment>
+                                                    page > 1 ? <React.Fragment>
                                                         <li><a href={"/txs"}>First</a></li>
                                                         <li><a href={"/txs?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
                                                     </React.Fragment> : ""

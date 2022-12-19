@@ -6,21 +6,26 @@ var blockscan = db.collection("blockscan")
 const moment = require("moment")
 const abi = require('web3-eth-abi')
 
-web3ws =()=>{
-    var subscription = web3.eth.subscribe('newBlockHeaders', function(error, result){
+web3ws =async()=>{
+    var subscription = web3.eth.subscribe('newBlockHeaders',async function(error, result){
         if (!error && result !==null) {
-            web3.eth.getBlock("latest",true)
-            .then(block=>{
+          await web3.eth.getBlock("latest",true)
+            .then(async block=>{
                 if (block !== null) {
                     //console.log("latest",block)
                     var myobj = { number: block.number,block:block };
-                    blockcollection.find( { number: block.number } ).toArray(function(err, result) {
-                      if (err) throw err;
-                      if(result.length==0){
-                        blockcollection.insertOne(myobj, function(err, res) {
-                          if (err) throw err;
-                          console.log(block.number+" Latest Block Inserted");
-                        });
+                    await blockcollection.find( { number: block.number } ).toArray(async function(err, result) {
+                      if (err) {
+                        console.log("DB Insert Error")
+                      }else if(result.length==0){
+                        try{
+                          await blockcollection.insertOne(myobj, function(err, res) {
+                            if (err) throw err;
+                            console.log(block.number+" Latest Block Inserted");
+                          });
+                        }catch(errr){
+                          console.log("DB Error BLOCK")
+                        }
                       }else{
                         console.log(block.number+" Latest Block Exits in Database")
                       }
@@ -28,7 +33,7 @@ web3ws =()=>{
                     
                     var timestamp = moment(block.timestamp*1000).format("YYYY-MM-DD");
                     if (block.transactions !== null && block.transactions.length !== 0) {
-                      block.transactions.forEach(function (item, index) {
+                      await block.transactions.forEach(async function (item, index) {
                         var gasfees = (item.gas*parseFloat(item.gasPrice))/1000000000000000000;
                         var data = {blockHash:item.blockHash,blockNumber:item.blockNumber,from:item.from,
                             gas:item.gas,gasPrice:item.gasPrice,timeStamp:block.timestamp,to:item.to,hash:item.hash,
@@ -36,13 +41,18 @@ web3ws =()=>{
                             gwei:parseFloat(item.gasPrice)/1000000000,gasFee:gasfees
                             }
                             var myobj2 = { hash: item.hash,number: block.number,timestamp:timestamp,data:data };
-                            trxcollection.find( { hash: item.hash } ).toArray(function(err, result) {
-                                if (err) throw err;
-                                if(result.length==0){
-                                    trxcollection.insertOne(myobj2, function(err, res) {
-                                       if (err) throw err;
-                                       console.log(item.hash+"Latest Trx Hash Inserted");
-                                    });
+                            await trxcollection.find( { hash: item.hash } ).toArray(async function(err, result) {
+                                if (err){
+                                  console.log("DB Insert Error")
+                                }else if(result.length==0){
+                                    try{
+                                      await trxcollection.insertOne(myobj2, function(err, res) {
+                                        if (err) throw err;
+                                        console.log(item.hash+"Latest Trx Hash Inserted");
+                                     });
+                                    }catch(errr){
+                                      console.log("BD ERROR TRX")
+                                    }
                                 }else{
                                     console.log(item.hash+" Latest Trx Hash Exits in Database")
                                 }
@@ -81,29 +91,34 @@ blockScan=async()=> {
         for (var i =startblock; i <= latestBlock; i++) {
           //let numblock = latestBlock-i
           await web3.eth.getBlock(i,true)
-          .then(block=>{
+          .then(async block=>{
             if (block !== null) {
               var myobj = { number: block.number,block:block };
-              blockcollection.find( { number: block.number } ).toArray(function(err, result) {
-                if (err) throw err;
-                if(result.length==0){
-                  blockcollection.insertOne(myobj, function(err, res) {
-                    if (err) throw err;
-                    console.log(block.number+" Block Inserted");
-                    var myquery = { id: 1 };
-                    var newvalues = { $set: {endblock: block.number } };
-                    blockscan.updateOne(myquery, newvalues, function(err, res) {
+              await blockcollection.find( { number: block.number } ).toArray(async function(err, result) {
+                if (err){
+                  console.log("DB Insert Error")
+                }else if(result.length==0){
+                  try{
+                    await blockcollection.insertOne(myobj,async function(err, res) {
                       if (err) throw err;
-                      //console.log("Endblok updated");
+                      console.log(block.number+" Block Inserted");
+                      var myquery = { id: 1 };
+                      var newvalues = { $set: {endblock: block.number } };
+                      await blockscan.updateOne(myquery, newvalues, function(err, res) {
+                        if (err) throw err;
+                        //console.log("Endblok updated");
+                      });
                     });
-                  });
+                  }catch(errr){
+                    console.log("DB ERROR BLOCK")
+                  }
                 }else{
                   console.log(block.number+" Block Exits in Database")
                 }
               })
               var timestamp = moment(block.timestamp*1000).format("YYYY-MM-DD");
               if (block.transactions !== null && block.transactions.length !== 0) {
-                block.transactions.forEach(function (item, index) {
+                await block.transactions.forEach(async function (item, index) {
                   //console.log("item",item)
                   //console.log("index",item.hash)
                   var gasfees = (item.gas*parseFloat(item.gasPrice))/1000000000000000000;
@@ -114,13 +129,18 @@ blockScan=async()=> {
   
                   }
                   var myobj2 = { hash: item.hash,number: block.number,timestamp:timestamp,data:data };
-                      trxcollection.find( { hash: item.hash } ).toArray(function(err, result) {
-                          if (err) throw err;
-                          if(result.length==0){
-                              trxcollection.insertOne(myobj2, function(err, res) {
-                                 if (err) throw err;
-                                 console.log(item+" Trx Hash Inserted");
-                              });
+                  await trxcollection.find( { hash: item.hash } ).toArray(async function(err, result) {
+                          if (err) {
+                            console.log("DB Insert Error")
+                          }else if(result.length==0){
+                              try{
+                                await trxcollection.insertOne(myobj2, function(err, res) {
+                                  if (err) throw err;
+                                  console.log(item+" Trx Hash Inserted");
+                               });
+                              }catch(errr){
+                                console.log("DB ERROR TRX")
+                              }
                           }else{
                               console.log(item+" Trx Hash Exits in Database")
                           }

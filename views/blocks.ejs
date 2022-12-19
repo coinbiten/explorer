@@ -25,7 +25,7 @@
                         lastblock: 0,
                         from: 0,
                         to: 0,
-                        page: 0,
+                        page: 1,
                         limit: 25,
                     }
                 }
@@ -109,7 +109,7 @@
                                         <div className="col-md-6">
                                             <ul>
                                                 {
-                                                    page > 0 ? <React.Fragment>
+                                                    page > 1 ? <React.Fragment>
                                                         <li><a href={"/blocks"}>First</a></li>
                                                         <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
                                                     </React.Fragment> : ""
@@ -173,7 +173,7 @@
                                         <div className="col-md-6">
                                             <ul>
                                                 {
-                                                    page > 0 ? <React.Fragment>
+                                                    page > 1 ? <React.Fragment>
                                                         <li><a href={"/blocks"}>First</a></li>
                                                         <li><a href={"/blocks?p=" + prevpage + "&limit=" + limit}>{smallerthen}</a> </li>
                                                     </React.Fragment> : ""
