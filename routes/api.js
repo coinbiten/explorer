@@ -305,12 +305,17 @@ router.get("/account/trx/:address", (req, res) => {
           trx.push(item.data)
         }
       })
-      var data = {
+      let data = new Map();
+      for (let obj of trx) {
+        data.set(obj.blockNumber, obj);
+      }
+      let out = [...data.values()];
+      var datareturn = {
         status: "Success",
         address: address,
-        trx: trx
+        trx: out
       }
-      res.json(data)
+      res.json(datareturn)
     }
   })
 })
