@@ -161,7 +161,7 @@
               <script>
                 axios.get("/api/block-count")
                   .then(res => {
-                    document.getElementById("blockn").innerText = res.data.number;
+                    document.getElementById("blockn").innerText = res.data.number-20;
                     document.getElementById("blockn1").innerText = res.data.number;
                     //console.log(res.data.number)
                   })

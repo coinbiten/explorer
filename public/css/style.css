@@ -22,7 +22,7 @@ body {
   display: none;
  }
 .logo img{
-  width: 170px;
+  width: auto;/*170*/
   height: 100%;
   cursor: pointer;
  }
