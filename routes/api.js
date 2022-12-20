@@ -325,7 +325,11 @@ router.get("/getrpc", (req, res) => {
         "networt-name": config.networt_name,
         "coin-name": config.coinName,
         "symbol": config.symbol,
-        "decimal": config.decimal
+        "decimal": config.decimal,
+        "price": 0,
+        "change24": 0,
+        "change1h": 0,
+        "test_network":config.test_network
       })
     };
     if (parseFloat(result[0].price) > 0) {
@@ -339,7 +343,8 @@ router.get("/getrpc", (req, res) => {
         "decimal": config.decimal,
         "price": result[0].price,
         "change24": result[0].change24,
-        "change1h": result[0].change1h
+        "change1h": result[0].change1h,
+        "test_network":config.test_network
       })
     } else {
       res.json({
@@ -349,83 +354,15 @@ router.get("/getrpc", (req, res) => {
         "networt-name": config.networt_name,
         "coin-name": config.coinName,
         "symbol": config.symbol,
-        "decimal": config.decimal
+        "decimal": config.decimal,
+        "price": 0,
+        "change24": 0,
+        "change1h": 0,
+        "test_network":config.test_network
       })
     }
   })
 
-})
-
-router.get('/test', (req, res) => {
-  web3.eth.getBlockNumber().then((result) => {
-    console.log("Latest Ethereum Block is ", result);
-  });
-
-  web3.eth.getBalance(req.query.address).then(bal => {
-    //console.log(bal)
-  });
-
-
-  /*
-  .then(ress=>{
-    console.log(ress)
-  })*/
-
-  //web3.eth.getChainId().then(console.log);
-  //web3.eth.getBlock(34625).then(console.log);
-  //web3.eth.getBlock("latest").then(console.log);
-
-  console.log("Block Hash")
-  //web3.eth.getBlock("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
-  /*web3.eth.getTransactionReceipt("0x3370778ff6dc3dbd79b562e3e82b1715482bb9f531a7a376bb96a604c6ea3cad")
-  .then(rs=>{
-    console.log(rs)
-    //console.log(rs.logs)
-    
-  });
-  //contract creation
-  web3.eth.getTransactionReceipt("0x30775355de0f873bb93dcf26005306eac0aee2b902424d370df50ffd5637838f").then(console.log);
-  web3.eth.getTransaction("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984")
-  .then(rs=>{
-    console.log(rs)
-    //console.log(rs.logs)
-  });*/
-  //Contract transaction 
-  web3.eth.getTransactionReceipt("0x88b3292970da72923efbe7663ded7e961a2fa3d719f6d237b49934ba3c335f53")
-    .then(ress => {
-      console.log(ress)
-    })
-  web3.eth.getBlock(162, true).then(console.log);
-  //web3.eth.getTransaction("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
-  // web3.eth.getTransactionReceipt("0x47fde7ae9523b46d76cc96105f85c08931e6e66e99529102147aa96c3d6ef984").then(console.log);
-  //console.log(web3.eth);
-  var blocks = []
-  web3.eth.getBlockNumber().then((result) => {
-    for (var i = 0; i < 100; i++) {//100 or result
-      web3.eth.getBlock(result - i)
-        .then(rs => {
-          //console.log(rs)
-          blocks.push(rs)
-        })
-        .catch(err => {
-          console.log("...")
-        })
-    }
-
-  });
-
-  setTimeout(() => {
-    blocks.sort((a, b) => { return a.number - b.number });
-    //console.log(blocks)
-  }, 10000)
-
-
-  res.json([
-    {
-      name: req.query.name,
-      age: req.query.age
-    }
-  ])
 })
 
 

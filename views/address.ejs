@@ -29,7 +29,7 @@
         async componentDidMount() {
           await axios.get("/api/getgasprice")
             .then(res => {
-              this.setState({ price: res.data.price, change1h: res.data.change1h, change24: res.data.change24})
+              this.setState({ price: res.data.price, change1h: res.data.change1h, change24: res.data.change24 })
             })
             .catch(error => {
               console.log(error)
@@ -56,47 +56,56 @@
           var val = this.state;
           var balance = parseFloat(val.price) * val.balance;
           var trx = val.transactions.map(res => {
-            var time = res.timeStamp*1000;
+            var time = res.timeStamp * 1000;
             var localTime = moment.utc(time).toDate();
-            var type="";
-            if(res.from==addressval){
-              type="OUT"
+            var type = "";
+            if (res.from == addressval) {
+              type = "OUT"
             }
-            if(res.to==addressval){
-              type="IN"
+            if (res.to == addressval) {
+              type = "IN"
             }
             return (
               <tr>
-                <td><a href={"/tx/"+res.hash}>{res.hash.substring(0,20)}...</a></td>
+                <td><a href={"/tx/" + res.hash}>{res.hash.substring(0, 20)}...</a></td>
                 <td><p class="trxmethod">Transfer</p></td>
-                <td><a href={"/block/"+res.blockNumber}>{res.blockNumber}</a></td>
+                <td><a href={"/block/" + res.blockNumber}>{res.blockNumber}</a></td>
                 <td>{moment(localTime).fromNow()}</td>
-                <td><a href={"/address/"+res.from}>{res.from==null?res.from:res.from.substring(0,20)}...</a></td>
+                <td><a href={"/address/" + res.from}>{res.from == null ? res.from : res.from.substring(0, 20)}...</a></td>
                 <td><p className={type}>{type}</p></td>
-                <td><a href={"/address/"+res.to}>{res.to==null ?res.to:res.to.substring(0,20)}...</a></td>
-                <td>{res.value/1000000000000000000} {name}</td>
+                <td><a href={"/address/" + res.to}>{res.to == null ? res.to : res.to.substring(0, 20)}...</a></td>
+                <td>{res.value / 1000000000000000000} {name}</td>
                 <td>{res.gasFee} {name}</td>
               </tr>
             )
           })
           return (
             <React.Fragment>
-              <div class="cards">
-                <h5>Overview</h5>
-                <div class="listcard">
-                  <div class="row">
-                    <div class="col-md-2">Balance:</div>
-                    <div class="col-md-10">{val.balance} {name}</div>
-                  </div>
-                </div>
-                <div class="listcard listcardbottom">
-                  <div class="row">
-                    <div class="col-md-2">Ether Value:</div>
-                    <div class="col-md-10">${(balance).toFixed(balance > 0.99 ? 2 : 8)} (@ ${val.price}/{name})</div>
-                  </div>
-                </div>
 
-              </div>
+              {
+                this.state.loader == true ?
+                  <div class="text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div> :
+                  <div class="cards">
+                    <h5>Overview</h5>
+                    <div class="listcard">
+                      <div class="row">
+                        <div class="col-md-2">Balance:</div>
+                        <div class="col-md-10">{val.balance} {name}</div>
+                      </div>
+                    </div>
+                    <div class="listcard listcardbottom">
+                      <div class="row">
+                        <div class="col-md-2">Ether Value:</div>
+                        <div class="col-md-10">${(balance).toFixed(balance > 0.99 ? 2 : 8)} (@ ${val.price}/{name})</div>
+                      </div>
+                    </div>
+
+                  </div>
+              }
 
               <div class="blocks">
                 <div class="table-responsive">
@@ -115,8 +124,13 @@
                     {trx}
                   </table>
                   {
-                    this.state.loader==true?<p style={{paddingTop:"50px",textAlign:"center"}}>Loading...</p>:
-                    val.transactions.length==0?<p style={{paddingTop:"50px",textAlign:"center"}}>Trandaction not found</p>:""
+                    this.state.loader == true ? 
+                    <div class="text-center">
+                      <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </div> :
+                      val.transactions.length == 0 ? <p style={{ paddingTop: "50px", textAlign: "center" }}>Trandaction not found</p> : ""
                   }
                 </div>
               </div>

@@ -646,3 +646,39 @@ tr:nth-child(odd) {
   padding-top: 7px;
   font-weight: bold;
 }
+.rpc-docs{
+  padding: 20px;
+  background-color: rgb(255, 251, 251);
+  margin-top: 50px;
+  margin-bottom: 100px;
+  min-height: 350px;
+  max-height: auto;
+  border-radius: 5px;
+}
+.api-docs{
+  margin-bottom: 50px;
+}
+.rpc-docs p{
+  margin-bottom: 5px;
+  color: rgb(34, 33, 33);
+  font-size: 15px;
+  font-weight: 500;
+}
+.api-docs h3{
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.api-docs h6{
+  font-size: 22px;
+  color: rgb(10, 114, 210);
+  margin-top: 50px;
+}
+.api-docs textarea{
+  width: 100%;
+  min-height: 350px;
+  max-height: auto;
+  background-color: rgb(26, 25, 25);
+  color: #ffffff;
+  border-radius: 5px;
+  padding: 5px;
+}

@@ -161,7 +161,7 @@
               <script>
                 axios.get("/api/block-count")
                   .then(res => {
-                    document.getElementById("blockn").innerText = res.data.number-20;
+                    document.getElementById("blockn").innerText = res.data.number - 20;
                     document.getElementById("blockn1").innerText = res.data.number;
                     //console.log(res.data.number)
                   })
@@ -218,7 +218,8 @@
             bdata: [],
             tdata: [],
             countt: 50,
-            loader: true
+            loader: true,
+            trxloader: true
           }
         }
         async componentDidMount() {
@@ -231,7 +232,7 @@
             })
           await axios.get("/api/trxs?limit=10&sort=desc")
             .then(res => {
-              this.setState({ tdata: res.data, loader: false })
+              this.setState({ tdata: res.data, trxloader: false })
             })
             .catch(error => {
               console.log(error)
@@ -287,7 +288,7 @@
                     <p>To <a href={"/address/" + res1.to}>{res1.to !== null ? res1.to.substring(0, 20) + "..." : "Null"}</a></p>
                   </div>
                   <div className="col-md-3 col-4">
-                    <p className="ethval">{(res1.value / 1000000000000000000).toFixed( val> 1 ? 2 : val==0?0:5)} {name}</p>
+                    <p className="ethval">{(res1.value / 1000000000000000000).toFixed(val > 1 ? 2 : val == 0 ? 0 : 5)} {name}</p>
                   </div>
                 </div>
               </div>
@@ -303,7 +304,14 @@
                       <p>Latest Blocks</p>
                     </div>
                     <div className="blockcardhome">
-                      {block}
+                      {
+                        this.state.loader == true ?
+                          <div class="text-center">
+                            <div class="spinner-border" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                          </div> : block
+                      }
                     </div>
                     <div className="blockviewbtn">
                       <a href="/blocks" className="btn btn-primary shadow-none w-100">View all blocks</a>
@@ -317,7 +325,12 @@
                       <p>Latest Transactions</p>
                     </div>
                     <div className="blockcardhome">
-                      {trx}
+                      {this.state.trxloader == true ?
+                        <div class="text-center">
+                          <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div> : trx}
                     </div>
 
                     <div className="blockviewbtn">
@@ -329,7 +342,7 @@
               </div>
 
 
-            </React.Fragment>
+            </React.Fragment >
           )
         }
 

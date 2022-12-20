@@ -35,6 +35,14 @@ router.get('/address/:address', (request, response) => {
   response.render("address.ejs", {title: config.networt_name+" Address "+address ,address:address,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
 })
 
+router.get('/rpc', (request, response) => { 
+  response.render("rpc.ejs", {title: config.networt_name+" RPC Info ",config:config,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
+})
+
+router.get('/api-docs', (request, response) => { 
+  response.render("api-docs.ejs", {title: config.networt_name+" API Docs Info ",config:config,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
+})
+
 /*
 router.get('*', function(req, res){
   res.render("error.ejs", {title: config.networt_name+" 404 page not found" ,name:config.coinName,symbol:config.symbol,networt_name:config.networt_name});
