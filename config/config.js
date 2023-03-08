@@ -1,5 +1,5 @@
 const data = {
-    supply: 50000000,
+    supply: 800000000,
     csupply: 100000000,
     reserve: 400000000,
     networt_name: "Biten Coin",
@@ -8,8 +8,8 @@ const data = {
     decimal: 18,
     networkid: 166,
     baseBlockReward: 2,//Proof of work value 2 Proof of Stake value 0
-    http_provider: 'http://84.46.247.245:8085',
-    ws_provider: 'ws://84.46.247.245:9091',
+    http_provider: 'http://155.133.23.127:8085',
+    ws_provider: 'ws://155.133.23.127:9091',
     dbname: "biten",
     //Coin Price Call From Livecoinwath API
     livecoinwatchapi: "https://api.livecoinwatch.com/coins/single",
