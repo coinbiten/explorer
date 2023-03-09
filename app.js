@@ -6,6 +6,10 @@ const path = require('path');
 const api = require("./routes/api");
 const route = require("./routes/route");
 
+const cors = require('cors');
+app.use(cors());
+app.options('*', cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
