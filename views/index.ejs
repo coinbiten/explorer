@@ -223,14 +223,14 @@
           }
         }
         async componentDidMount() {
-          await axios.get("/api/blocks?limit=15")
+          await axios.get("/api/blocks?limit=50")
             .then(res => {
               this.setState({ bdata: res.data, loader: false })
             })
             .catch(error => {
               console.log(error)
             })
-          await axios.get("/api/trxs?limit=10&sort=desc")
+          await axios.get("/api/trxs?limit=20&sort=desc")
             .then(res => {
               this.setState({ tdata: res.data, trxloader: false })
             })
