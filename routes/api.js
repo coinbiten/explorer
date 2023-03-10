@@ -303,7 +303,7 @@ router.get("/account/trx/:address", (req, res) => {
       })
       let data = new Map();
       for (let obj of trx) {
-        data.set(obj.blockNumber, obj);
+        data.set(obj.hash, obj);
       }
       let out = [...data.values()];
       var datareturn = {
