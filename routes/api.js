@@ -14,6 +14,48 @@ const abi = require('web3-eth-abi')
 const moment = require("moment")
 blockScan()
 
+function removeDuplicates(){
+        blockcollection.aggregate([
+ {
+     "$group": {
+         _id: {number: "$number"},
+         dups: { $addToSet: "$_id" } ,
+         count: { $sum : 1 }
+     }
+ },
+ {
+     "$match": {
+         count: { "$gt": 1 }
+     }
+ }]).forEach(function(doc) {
+   doc.dups.shift();
+   blockcollection.remove({
+       _id: {$in: doc.dups}
+   });
+ })
+ 
+    trxcollection.aggregate([
+ {
+     "$group": {
+         _id: {hash: "$hash"},
+         dups: { $addToSet: "$_id" } ,
+         count: { $sum : 1 }
+     }
+ },
+ {
+     "$match": {
+         count: { "$gt": 1 }
+     }
+ }]).forEach(function(doc) {
+   doc.dups.shift();
+   trxcollection.remove({
+       _id: {$in: doc.dups}
+   });
+ })
+}
+
+removeDuplicates()
+
 function getBlockFn(number) {
   web3.eth.getBlock(number)
     .then(rs => {

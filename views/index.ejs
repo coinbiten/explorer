@@ -230,7 +230,7 @@
             .catch(error => {
               console.log(error)
             })
-          await axios.get("/api/trxs?limit=20&sort=desc")
+          await axios.get("/api/trxs?limit=25&sort=desc")
             .then(res => {
               this.setState({ tdata: res.data, trxloader: false })
             })
