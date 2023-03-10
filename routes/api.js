@@ -175,8 +175,9 @@ router.get("/trxs", (req, res) => {
       sorts = 1
     }
   }
+
   if (req.query.page !== "" && req.query.page !== undefined) {
-    page = (parseInt(req.query.page)-1) * limits
+    page = (parseInt(req.query.page)* limits) -1
   }
   var trx = []
   trxcollection.find().sort({ number: sorts }).skip(page).limit(limits).toArray(function (err, result) {
@@ -186,12 +187,7 @@ router.get("/trxs", (req, res) => {
       result.forEach(function (item, index) {
         trx.push(item.data)
       })
-      let data = new Map();
-      for (let obj of trx) {
-        data.set(obj.blockNumber, obj);
-      }
-      let out = [...data.values()];
-      res.json(out)
+      res.json(trx)
     }
   })
 
