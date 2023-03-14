@@ -54,7 +54,6 @@ function removeDuplicates(){
  })
 }
 
-removeDuplicates()
 
 function getBlockFn(number) {
   web3.eth.getBlock(number)
@@ -122,6 +121,7 @@ router.get("/getgasprice", (req, res) => {
 })
 router.get("/blocks", (req, res) => {
   blockScan()
+  removeDuplicates()
   var limits = 50
   var sorts = -1
   var page = 0;
