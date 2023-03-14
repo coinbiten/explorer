@@ -408,6 +408,20 @@ router.get("/getrpc", (req, res) => {
 
 })
 
+router.get("/supply", (req, res) => {
+  pricecollect.find({ id: 1 }).toArray(function (err, result) {
+    res.json({
+      "result":config.supply
+    })
+  })
+})
 
+router.get("/csupply", (req, res) => {
+  pricecollect.find({ id: 1 }).toArray(function (err, result) {
+    res.json({
+      "result":config.csupply
+    })
+  })
+})
 
 module.exports = router    

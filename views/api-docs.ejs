@@ -325,6 +325,17 @@
                         }
                     </textarea>
 
+                    <h6>Coin Supply Information</h6>
+                    <p>
+                        This returns details about Coin Total Supply Info available Http Request
+                    </p>
+                    <p id="supplyi"></p>
+
+                    <h6>Coin Circulating Supply Information</h6>
+                    <p>
+                        This returns details about Coin Current Circulating Supply Info available Http Request
+                    </p>
+                    <p id="ccsupply"></p>
 
                 </div>
             </div>
@@ -346,6 +357,8 @@
         document.getElementById("bkh").innerText = "GET " + base_url + "/api/block-count";
         document.getElementById("bkh").innerText = "GET " + base_url + "/api/trx-count";
         document.getElementById("pending").innerText = "GET " + base_url + "/api/pending-trx";
+        document.getElementById("supplyi").innerText = "GET " + base_url + "/api/supply";
+        document.getElementById("ccsupply").innerText = "GET " + base_url + "/api/csupply";
     </script>
 
     <%- include("layout/footer") %>
