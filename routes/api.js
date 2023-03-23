@@ -66,7 +66,7 @@ function getBlockFn(number) {
 }
 
 router.get("/priceupdate", (req, res) => {
-  fetch(new Request(config.livecoinwatchapi), {
+  /*fetch(new Request(config.livecoinwatchapi), {
     method: "POST",
     headers: new Headers({
       "content-type": "application/json",
@@ -77,12 +77,13 @@ router.get("/priceupdate", (req, res) => {
       code: config.currency_code,
       meta: true,
     }),
-  })
+  })*/
+  fetch("https://api.coinpaprika.com/v1/tickers/btn-biten")
     .then((response) => response.json())
     .then((data) => {
-      var hour = (parseFloat(data.delta.hour - 1) * 100).toFixed(2)
-      var day = (parseFloat(data.delta.day - 1) * 100).toFixed(2)
-      var priceval = parseFloat(data.rate).toFixed(data.rate > 1 ? 2 : 8)
+      var hour = parseFloat(data.quotes.USD.percent_change_1h).toFixed(2) //(parseFloat(data.delta.hour - 1) * 100).toFixed(2)
+      var day = parseFloat(data.quotes.USD.percent_change_24h).toFixed(2)//(parseFloat(data.delta.day - 1) * 100).toFixed(2)
+      var priceval = parseFloat(data.quotes.USD.price).toFixed(data.quotes.USD.price > 1 ? 2 : 8)//parseFloat(data.rate).toFixed(data.rate > 1 ? 2 : 8)
       var myquery = { id: 1 };
       var newvalues = { $set: { price: priceval, change24: day, change1h: hour } };
       pricecollect.updateOne(myquery, newvalues, function (err, res) {
@@ -110,15 +111,16 @@ router.get("/getgasprice", (req, res) => {
       change1h = result[0].change1h;
       //res.json(result[0].change24)
     }
-  })
-  web3.eth.getGasPrice(function (e, r) {
-    res.json({
-      gwei: r / 1000000000, gweidecimal: r, eth: r * 21000 / 1000000000000000000,
-      price: price, change1h: change1h, change24: change24, supply: config.supply, csupply: config.csupply,
-      name: config.name, symbol: config.symbol
+    web3.eth.getGasPrice(function (e, r) {
+      res.json({
+        gwei: r / 1000000000, gweidecimal: r, eth: r * 21000 / 1000000000000000000,
+        price: price, change1h: change1h, change24: change24, supply: config.supply, csupply: config.csupply,
+        name: config.name, symbol: config.symbol
+      })
     })
   })
 })
+
 router.get("/blocks", (req, res) => {
   blockScan()
   removeDuplicates()
