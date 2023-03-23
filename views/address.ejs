@@ -27,12 +27,17 @@
           }
         }
         async componentDidMount() {
-          await axios.get("/api/getgasprice")
+
+          await axios.get("/api/priceupdate")
             .then(res => {
-              this.setState({ price: res.data.price, change1h: res.data.change1h, change24: res.data.change24 })
+              //console.log(res)
+              var price = res.data.data["price"]
+              var change24 = res.data.data["change24"]
+              var change1h = res.data.data["change1h"]
+              this.setState({ price: price, change1h: change1h, change24: change24 })
             })
-            .catch(error => {
-              console.log(error)
+            .catch(errr => {
+              console.log(errr)
             })
 
           await axios.get("/api/account/" + addressval)
@@ -124,12 +129,12 @@
                     {trx}
                   </table>
                   {
-                    this.state.loader == true ? 
-                    <div class="text-center">
-                      <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                      </div>
-                    </div> :
+                    this.state.loader == true ?
+                      <div class="text-center">
+                        <div class="spinner-border" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                      </div> :
                       val.transactions.length == 0 ? <p style={{ paddingTop: "50px", textAlign: "center" }}>Trandaction not found</p> : ""
                   }
                 </div>
