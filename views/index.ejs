@@ -116,19 +116,21 @@
 
                   axios.get("/api/getgasprice")
                     .then(res => {
-                      var gastousd = (res.data.eth * res.data.price);
-                      var color = "";
-                      var ch24h = parseFloat(res.data.change24);
-                      if (ch24h > 0) {
-                        color = "green";
-                      } else {
-                        color = "red";
-                      }
-                      var chadd = ch24h > 0 ? "+" + ch24h : "" + ch24h;
-                      document.getElementById("gasset").innerHTML = res.data.gwei + " Gwei ($" + gastousd.toFixed(gastousd > 1 ? 2 : gastousd >= 0.05 ? 4 : 8) + ")"
-                      document.getElementById("priceshow").innerHTML = "$" + res.data.price + " <span style='color:" + color + ";'>" + "(" + chadd + "%)<span>";
-                      document.getElementById("marketcap").innerHTML = "$" + (parseFloat(res.data.price) * res.data.csupply).toLocaleString("en-US")
-                      console.log(res.data.price)
+                        setInterval(() => {
+                          var gastousd = (res.data.eth * price);
+                          var color = "";
+                          var ch24h = parseFloat(change24);
+                          if (ch24h > 0) {
+                            color = "green";
+                          } else {
+                            color = "red";
+                          }
+                          var chadd = ch24h > 0 ? "+" + ch24h : "" + ch24h;
+                          document.getElementById("gasset").innerHTML = res.data.gwei + " Gwei ($" + gastousd.toFixed(gastousd > 1 ? 2 : gastousd >= 0.05 ? 4 : 8) + ")"
+                          document.getElementById("priceshow").innerHTML = "$" + price + " <span style='color:" + color + ";'>" + "(" + chadd + "%)<span>";
+                          document.getElementById("marketcap").innerHTML = "$" + (parseFloat(price) * res.data.csupply).toLocaleString("en-US")
+                          //console.log(price)
+                        }, 1000)
                     })
                     .catch(errr => {
                       console.log(errr)
