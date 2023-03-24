@@ -20,9 +20,9 @@
                     }
                 }
                 async componentDidMount() {
-                    await axios.get("/api/getgasprice")
+                    await axios.get("/api/priceupdate")
                         .then(res => {
-                            this.setState({ price: res.data.price, change1h: res.data.change1h, change24: res.data.change24 })
+                            this.setState({ price: res.data.data["price"], change1h: res.data.data["change1h"], change24: res.data.data["change24"] })
                             //console.log(res.data)
                         })
                         .catch(err => {
