@@ -29,7 +29,7 @@ function removeDuplicates(){
      }
  }]).forEach(function(doc) {
    doc.dups.shift();
-   blockcollection.remove({
+   blockcollection.deleteOne({
        _id: {$in: doc.dups}
    });
  })
