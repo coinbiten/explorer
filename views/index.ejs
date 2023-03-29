@@ -106,15 +106,21 @@
                   1 Gwei ($0)
                 </p>
                 <script>
+                  var price = 0;
+                  var change24 =0;
                   axios.get("/api/priceupdate")
                     .then(res => {
                       //console.log(res)
+                      price=res.data.data["price"]
+                      change24=res.data.data["change24"]
                     })
                     .catch(errr => {
                       console.log(errr)
                     })
 
-                  axios.get("/api/getgasprice")
+                  
+                  setTimeout(function(){
+                    axios.get("/api/getgasprice")
                     .then(res => {
                         setInterval(() => {
                           var gastousd = (res.data.eth * price);
@@ -135,6 +141,7 @@
                     .catch(errr => {
                       console.log(errr)
                     })
+                  },2000)
                 </script>
               </div>
             </div>
