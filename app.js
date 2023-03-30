@@ -17,18 +17,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
-setInterval(()=>{
- try{
-  require("./routes/blockscanner")
-  blockScan()
- }catch(console0){
-  console.log("web3 error")
- }
-},60000)
+
 
 app.use("/",route);
 app.use("/api",api);
 
+setInterval(()=>{
+  try{
+   require("./routes/blockscanner")
+   blockScan()
+  }catch(err){
+   console.log("web3 error")
+  }
+ },20000)
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+

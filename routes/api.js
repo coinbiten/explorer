@@ -13,45 +13,80 @@ const abi = require('web3-eth-abi')
 const moment = require("moment")
 
 
+ async function amyacc(){
+  var currentBlock = await web3.eth.getBlockNumber()
 
-function removeDuplicates(){
-        blockcollection.aggregate([
- {
-     "$group": {
-         _id: {number: "$number"},
-         dups: { $addToSet: "$_id" } ,
-         count: { $sum : 1 }
-     }
- },
- {
-     "$match": {
-         count: { "$gt": 1 }
-     }
- }]).forEach(function(doc) {
-   doc.dups.shift();
-   blockcollection.deleteOne({
-       _id: {$in: doc.dups}
-   });
- })
- 
-    trxcollection.aggregate([
- {
-     "$group": {
-         _id: {hash: "$hash"},
-         dups: { $addToSet: "$_id" } ,
-         count: { $sum : 1 }
-     }
- },
- {
-     "$match": {
-         count: { "$gt": 1 }
-     }
- }]).forEach(function(doc) {
-   doc.dups.shift();
-   trxcollection.deleteOne({
-       _id: {$in: doc.dups}
-   });
- })
+  var myAddr="0xc7f2d230747B05DF1b2D6EE778e14e83889E843B"
+  web3.eth.getTransactionCount(myAddr, currentBlock)
+  .then(async(b)=> {
+    console.log(b)
+    console.log(currentBlock)
+    var bal=0;
+    for (var i=currentBlock; i >= 0 && (b > 0); --i) {
+      try {
+          var block =await web3.eth.getBlock(i, true);
+          console.log(block.number)
+          if (block && block.transactions) {
+              block.transactions.forEach(function(e) {
+                  if (myAddr == e.from) {
+                      if (e.from != e.to)
+                          bal = bal.plus(e.value);
+                      console.log(i, e.from, e.to, e.value.toString(10));
+                  }
+                  if (myAddr == e.to) {
+                      if (e.from != e.to)
+                          bal = bal.minus(e.value);
+                      console.log(i, e.from, e.to, e.value.toString(10));
+                  }
+                  console.log("Bal : ",bal)
+              });
+          }
+      } catch (e) { console.error("Error in block " + i, e); }
+  }
+  console.log("Bal : ",bal)
+  });
+}
+//amyacc()
+
+
+function removeDuplicates() {
+  blockcollection.aggregate([
+    {
+      "$group": {
+        _id: { number: "$number" },
+        dups: { $addToSet: "$_id" },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      "$match": {
+        count: { "$gt": 1 }
+      }
+    }]).forEach(function (doc) {
+      doc.dups.shift();
+      blockcollection.deleteOne({
+        _id: { $in: doc.dups }
+      });
+    })
+
+  trxcollection.aggregate([
+    {
+      "$group": {
+        _id: { hash: "$hash" },
+        dups: { $addToSet: "$_id" },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      "$match": {
+        count: { "$gt": 1 }
+      }
+    }]).forEach(function (doc) {
+      doc.dups.shift();
+      trxcollection.deleteOne({
+        _id: { $in: doc.dups }
+      });
+    })
 }
 
 
@@ -139,7 +174,7 @@ router.get("/blocks", (req, res) => {
     }
   }
   if (req.query.page !== "" && req.query.page !== undefined) {
-    page = (parseInt(req.query.page)-1) * limits
+    page = (parseInt(req.query.page) - 1) * limits
   }
   var blocks = []
   blockcollection.find().sort({ number: sorts }).skip(page).limit(limits)
@@ -220,7 +255,7 @@ router.get("/trxs", (req, res) => {
   }
 
   if (req.query.page !== "" && req.query.page !== undefined) {
-    page = (parseInt(req.query.page)* limits) -1
+    page = (parseInt(req.query.page) * limits) - 1
   }
   var trx = []
   trxcollection.find().sort({ number: sorts }).skip(page).limit(limits).toArray(function (err, result) {
@@ -373,7 +408,7 @@ router.get("/getrpc", (req, res) => {
         "price": 0,
         "change24": 0,
         "change1h": 0,
-        "test_network":config.test_network
+        "test_network": config.test_network
       })
     };
     if (parseFloat(result[0].price) > 0) {
@@ -388,7 +423,7 @@ router.get("/getrpc", (req, res) => {
         "price": result[0].price,
         "change24": result[0].change24,
         "change1h": result[0].change1h,
-        "test_network":config.test_network
+        "test_network": config.test_network
       })
     } else {
       res.json({
@@ -402,7 +437,7 @@ router.get("/getrpc", (req, res) => {
         "price": 0,
         "change24": 0,
         "change1h": 0,
-        "test_network":config.test_network
+        "test_network": config.test_network
       })
     }
   })
@@ -412,7 +447,7 @@ router.get("/getrpc", (req, res) => {
 router.get("/supply", (req, res) => {
   pricecollect.find({ id: 1 }).toArray(function (err, result) {
     res.json({
-      "result":config.supply
+      "result": config.supply
     })
   })
 })
@@ -420,7 +455,7 @@ router.get("/supply", (req, res) => {
 router.get("/csupply", (req, res) => {
   pricecollect.find({ id: 1 }).toArray(function (err, result) {
     res.json({
-      "result":config.csupply
+      "result": config.csupply
     })
   })
 })
